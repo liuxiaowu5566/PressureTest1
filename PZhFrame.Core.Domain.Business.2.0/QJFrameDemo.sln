@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{52CCAF1D-0610-46CF-A50D-04CE80864534}"
 EndProject
@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoService", "DemoService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoServeiceHost", "DemoServeiceHost\DemoServeiceHost.csproj", "{8236EC3A-1CFB-471A-97F3-84765871BEB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoTest", "DemoTest\DemoTest.csproj", "{BF5B147F-1D59-42DA-88BB-AA49CD376A66}"
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{2E579051-5253-4BD1-A4AA-AB38F0301AAD}"
 	ProjectSection(SolutionItems) = preProject
 		..\测试规范.md = ..\测试规范.md
@@ -44,6 +45,10 @@ Global
 		{8236EC3A-1CFB-471A-97F3-84765871BEB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8236EC3A-1CFB-471A-97F3-84765871BEB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8236EC3A-1CFB-471A-97F3-84765871BEB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF5B147F-1D59-42DA-88BB-AA49CD376A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF5B147F-1D59-42DA-88BB-AA49CD376A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF5B147F-1D59-42DA-88BB-AA49CD376A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF5B147F-1D59-42DA-88BB-AA49CD376A66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
