@@ -12,6 +12,6 @@ namespace DemoService.Services.Interface.Json
         void TestJson(b_house_basic_attribute model);
         ResponseModel<b_house_basic_attribute1> GetHouse(int index, int pageSize);
         ResponseModel<b_house_basic_attribute> GetJsonHouse(int index, int pageSize);
-        ResponseModel<b_house_basic_attribute1> GetHouseByExecuteStoredProcedure(int pageIndex, int pageSize);
+        ResponseModel<b_house_basic_attributesp> GetHouseByExecuteStoredProcedure(int pageIndex, int pageSize);
     }
 }

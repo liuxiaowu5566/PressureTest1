@@ -4,19 +4,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Model\新文件夹\**" />
-    <EmbeddedResource Remove="Model\新文件夹\**" />
-    <None Remove="Model\新文件夹\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Model\ModelTemplate.12.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="PZhFrame.Data.DataService" Version="1.0.1" />
@@ -43,11 +30,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Model\ModelTemplate.Model.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Template.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

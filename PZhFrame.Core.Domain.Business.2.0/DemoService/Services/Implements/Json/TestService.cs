@@ -200,15 +200,15 @@ namespace DemoService.Services.Implements.Json
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ResponseModel<b_house_basic_attribute1> GetHouseByExecuteStoredProcedure(int pageIndex, int pageSize)
+        public ResponseModel<b_house_basic_attributesp> GetHouseByExecuteStoredProcedure(int pageIndex, int pageSize)
         {
             string storedProcedureName = "ROW2COL";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@resourceTableName", "b_house_basic_attribute", System.Data.DbType.String);
             parameters.Add("@pageIndex", pageIndex,System.Data.DbType.Int32);
             parameters.Add("@pageSize", pageSize, System.Data.DbType.Int32);
-            List<b_house_basic_attribute1> hList = new b_house_basic_attribute().StoredProcedure<b_house_basic_attribute1>(storedProcedureName, parameters);
-            ResponseModel<b_house_basic_attribute1> resModel = new ResponseModel<b_house_basic_attribute1>(hList);
+            List<b_house_basic_attributesp> hList = new b_house_basic_attribute().StoredProcedure<b_house_basic_attributesp>(storedProcedureName, parameters);
+            ResponseModel<b_house_basic_attributesp> resModel = new ResponseModel<b_house_basic_attributesp>(hList);
             return resModel;
         }
 
