@@ -7,24 +7,37 @@ using System.Text;
 
 namespace DemoService.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("Test")]
     public class TestController : Controller
     {
         ITestService service = null;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
         public TestController(ITestService service)
         {
             this.service = service;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet,Route("Add")]
         public string Add()
         {
-            //for(int i=0; i<10;i++)
-            //{
-            //    service.Test();
-            //}
             return service.Test();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Route("AddJson")]
         public string AddJson()
         {
@@ -32,6 +45,11 @@ namespace DemoService.Controllers
             return "hello";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Route("AddJson")]
         public string AddJson([FromBody] b_house_basic_attribute model)
         {
@@ -39,16 +57,18 @@ namespace DemoService.Controllers
             return "hello";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
         [HttpGet,Route("House/{index}/{pagesize}")]
-        //public List<b_house_basic_attribute> House(int index=1, int pagesize = 15)
-        //{
-        //    return service.GetHouse(index, pagesize);
-        //}
-
         public ResponseModel<b_house_basic_attribute> House(int index = 1, int pagesize = 15)
         {
             return service.GetHouse(index, pagesize);
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -60,6 +80,7 @@ namespace DemoService.Controllers
         {
             return service.GetJsonHouse(index, pagesize);
         }
+
         /// <summary>
         /// 
         /// </summary>

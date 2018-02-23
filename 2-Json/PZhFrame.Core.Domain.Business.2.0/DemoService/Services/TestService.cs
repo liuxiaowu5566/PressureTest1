@@ -18,18 +18,7 @@ namespace DemoService.Services
         {
             this.cache = cache;
         }
-        public string TestEx()
-        {
-            List<b_house_basic_attribute> house = new b_house_basic_attribute().Select<b_house_basic_attribute>().ToList();
-            //Where(o => o.house_code == "MD_2017_20755").FirstOrDefault();
-            int res = 0;
-            foreach (var h in house)
-            {
-                if (h.InsertEx() == 1) res++;
-            }
-
-            return $"{house.Count.ToString()} success {res.ToString()}";
-        }
+        
         //新增b_house_basic_attribute
         //public string Test()
         //{
@@ -111,6 +100,10 @@ namespace DemoService.Services
             return $"{house.Count.ToString()} success {res.ToString()}";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
         public void TestJson(b_house_basic_attribute model)
         {
             new_resource_json_info info = new new_resource_json_info
@@ -121,14 +114,11 @@ namespace DemoService.Services
             int i=info.Insert();
             i++;
         }
-        public async void TestJson()
-        {
-            test model = new test { id=1,name = "sjw" };
-            int i = model.InsertAutoId();
-            i++;
-        }
 
-        public async void TestJson1()
+        /// <summary>
+        /// 
+        /// </summary>
+        public async void TestJson()
         {
             List<b_house_basic_attribute> house = new b_house_basic_attribute().Select<b_house_basic_attribute>().ToList();
             house.FirstOrDefault().BeginTran();
@@ -177,6 +167,12 @@ namespace DemoService.Services
             //return $"{house.Count.ToString()} success {res.ToString()}";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public ResponseModel<b_house_basic_attribute> GetHouse(int index, int pageSize)
         {
             List<b_house_basic_attribute> hList = new b_house_basic_attribute().SelectEx<b_house_basic_attribute>(index, pageSize); 
@@ -184,6 +180,12 @@ namespace DemoService.Services
             return resModel;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
         public ResponseModel<b_house_basic_attribute> GetJsonHouse(int index, int pagesize)
         {
             List<b_house_basic_attribute> hList = new b_house_basic_attribute().GetJson<b_house_basic_attribute>(index,pagesize); 
@@ -191,6 +193,12 @@ namespace DemoService.Services
             return resModel;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public ResponseModel<b_house_basic_attribute1> GetHouseByExecuteStoredProcedure(int pageIndex, int pageSize)
         {
             string storedProcedureName = "ROW2COL";
