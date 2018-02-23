@@ -14,6 +14,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoServeiceHost", "DemoServeiceHost\DemoServeiceHost.csproj", "{8236EC3A-1CFB-471A-97F3-84765871BEB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoTest", "DemoTest\DemoTest.csproj", "{BF5B147F-1D59-42DA-88BB-AA49CD376A66}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{2E579051-5253-4BD1-A4AA-AB38F0301AAD}"
+	ProjectSection(SolutionItems) = preProject
+		..\测试规范.md = ..\测试规范.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
