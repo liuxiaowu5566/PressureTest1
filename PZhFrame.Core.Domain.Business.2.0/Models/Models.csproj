@@ -11,12 +11,44 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Model\ModelTemplate.12.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="PZhFrame.Data.DataService" Version="1.0.1" />
     <PackageReference Include="PZhFrame.Data.Repository" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PZhFrame.ModelLayer.BaseModel\PZhFrame.ModelLayer.BaseModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Model\ModelTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Model\ModelTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Model\ModelTemplate.Model.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Template.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
