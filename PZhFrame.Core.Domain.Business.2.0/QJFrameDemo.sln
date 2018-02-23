@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{52CCAF1D-0610-46CF-A50D-04CE80864534}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{52CCAF1D-0610-46CF-A50D-04CE80864534}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PZhFrame.Data.DapperHelper", "PZhFrame.Data.DapperHelper\PZhFrame.Data.DapperHelper.csproj", "{3DB82841-BF01-4D42-BF44-FAAB73153927}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PZhFrame.ModelLayer.BaseModels", "PZhFrame.ModelLayer.BaseModel\PZhFrame.ModelLayer.BaseModels.csproj", "{8A76C859-9779-4DE8-A753-4417FF310532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoService", "DemoService\DemoService.csproj", "{F7BCEED5-3222-46BB-B902-38998B35CC4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoService", "DemoService\DemoService.csproj", "{F7BCEED5-3222-46BB-B902-38998B35CC4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoServeiceHost", "DemoServeiceHost\DemoServeiceHost.csproj", "{8236EC3A-1CFB-471A-97F3-84765871BEB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoServeiceHost", "DemoServeiceHost\DemoServeiceHost.csproj", "{8236EC3A-1CFB-471A-97F3-84765871BEB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{2E579051-5253-4BD1-A4AA-AB38F0301AAD}"
+	ProjectSection(SolutionItems) = preProject
+		..\测试规范.md = ..\测试规范.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
