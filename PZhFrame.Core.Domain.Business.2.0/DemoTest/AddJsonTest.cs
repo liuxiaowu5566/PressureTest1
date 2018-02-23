@@ -1,11 +1,7 @@
 using DemoService.Services.Data;
-using DemoService.Services.Json;
 using Models.Model;
 using PZhFrame.Core.Infrastructure.Lib;
-using PZhFrame.Core.Infrastructure.Net;
-using System;
 using System.Linq;
-using System.Reflection;
 using Xunit;
 
 namespace DemoTest
