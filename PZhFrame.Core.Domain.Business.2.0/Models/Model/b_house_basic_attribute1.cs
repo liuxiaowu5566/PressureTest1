@@ -20,7 +20,7 @@ namespace Models.Model
            /// </summary>           
 	   [ExplicitKey]    
            [Head("id","主键ID")]
-           public int id {get;set;}
+           public Guid id {get;set;}
 
            /// <summary>
            /// Desc:房源ID
@@ -28,7 +28,7 @@ namespace Models.Model
            /// Nullable:True
            /// </summary>           
            [Head("house_basic_code","房源ID")]
-           public string house_basic_code {get;set;}
+           public Guid? house_basic_code {get;set;}
 
            /// <summary>
            /// Desc:小区ID
@@ -36,7 +36,7 @@ namespace Models.Model
            /// Nullable:True
            /// </summary>           
            [Head("house_estate_code","小区ID")]
-           public string house_estate_code {get;set;}
+           public Guid? house_estate_code {get;set;}
 
            /// <summary>
            /// Desc:房源编号
@@ -293,7 +293,7 @@ namespace Models.Model
            /// </summary>  
            [AccountId]
            [Head("accountid","用户ID")]
-           public string accountid {get;set;}
+           public Guid? accountid {get;set;}
 
            /// <summary>
            /// Desc:是否置顶，0不置顶，1置顶
@@ -333,7 +333,7 @@ namespace Models.Model
            /// Nullable:True
            /// </summary>           
            [Head("operatorid","操作人ID")]
-           public string operatorid {get;set;}
+           public Guid? operatorid {get;set;}
 
            /// <summary>
            /// Desc:
@@ -341,7 +341,7 @@ namespace Models.Model
            /// Nullable:True
            /// </summary>           
            [Head("founder","-")]
-           public string founder {get;set;}
+           public Guid? founder {get;set;}
 
     }
 }

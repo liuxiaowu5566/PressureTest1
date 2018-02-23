@@ -174,10 +174,10 @@ namespace DemoService.Services.Implements.Json
         /// <param name="index"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ResponseModel<b_house_basic_attribute> GetHouse(int index, int pageSize)
+        public ResponseModel<b_house_basic_attribute1> GetHouse(int index, int pageSize)
         {
-            List<b_house_basic_attribute> hList = new b_house_basic_attribute().SelectEx<b_house_basic_attribute>(index, pageSize); 
-            ResponseModel<b_house_basic_attribute> resModel = new ResponseModel<b_house_basic_attribute>(hList);
+            List<b_house_basic_attribute1> hList = new b_house_basic_attribute().SelectEx<b_house_basic_attribute1>(index, pageSize); 
+            ResponseModel<b_house_basic_attribute1> resModel = new ResponseModel<b_house_basic_attribute1>(hList);
             return resModel;
         }
 

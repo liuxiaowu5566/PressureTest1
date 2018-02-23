@@ -313,23 +313,8 @@ namespace PZhFrame.ModelLayer.BaseModels
                 Where(o => o.table_name == tableName && o.isdelete == false).ToList();
             //Guid tableid = fileds.First().table_id;
             List<new_resource_info> infos = new new_resource_info().Select<new_resource_info>(index, pageSize);
-            //List<T> res = new List<T>();
             ConcurrentBag<T> res = new ConcurrentBag<T>();
             Type typeInfo = typeof(T);
-            //var properties = typeInfo.GetProperties().ToList();
-            //foreach (var info in infos)
-            //{
-            //    T model = new T();
-            //    List<new_filed_modify_log> filedValues = new new_filed_modify_log().Select<new_filed_modify_log>().Where(o => o.resource_id == info.id).ToList();
-            //    foreach (var p in properties)
-            //    {
-            //        new_fileds_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();
-            //        var value = filedValues.Where(o => o.filed_id == filed.id).FirstOrDefault().value;
-            //        p.SetValue(model, convertValue(filed.utype, value));
-            //    }
-            //    res.Add(model);
-            //}
-            //List<new_filed_modify_log> total = new new_filed_modify_log().Select<new_filed_modify_log>();
             var properties = typeInfo.GetProperties().ToList();
 
             //计算机 内核数量 最大并发数
@@ -339,7 +324,7 @@ namespace PZhFrame.ModelLayer.BaseModels
             };
 
 
-            List<FiledAuth> filedAuths = GetFiledAuth(tableName, "0c945d67-c95d-4ecc-8e7a-3e63e040ec7a");
+            //List<FiledAuth> filedAuths = GetFiledAuth(tableName, "0c945d67-c95d-4ecc-8e7a-3e63e040ec7a");
             Parallel.ForEach(infos, opt, info =>
               {
                   T model = new T();
@@ -349,14 +334,15 @@ namespace PZhFrame.ModelLayer.BaseModels
                   {
                       new_fileds_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();
                       
-                      if (filedAuths.Where(o => o.id == filed.id).FirstOrDefault().auth)
-                      {
+                      //if (filedAuths.Where(o => o.id == filed.id).FirstOrDefault().auth)
+                      //{
                           var value = filedValues.Where(o => o.filed_id == filed.id).OrderByDescending(o => o.modifytime).FirstOrDefault().value;
                           Task.Run(() => { p.SetValue(model, convertValue(filed.utype, value)); }).ConfigureAwait(false);
-                      }
+                      //}
                   });
                   res.Add(model);
               });
+
             return res.ToList();
         }
 

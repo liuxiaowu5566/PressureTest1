@@ -61,7 +61,7 @@ namespace DemoService.Controllers.Json
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet,Route("House/{index}/{pagesize}")]
-        public ResponseModel<b_house_basic_attribute> House(int index = 1, int pagesize = 15)
+        public ResponseModel<b_house_basic_attribute1> House(int index = 1, int pagesize = 15)
         {
             return service.GetHouse(index, pagesize);
         }
