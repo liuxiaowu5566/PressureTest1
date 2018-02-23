@@ -1,9 +1,6 @@
-﻿using DemoService.Services.Json;
+﻿using DemoService.Services.Interface.Json;
 using Microsoft.AspNetCore.Mvc;
 using Models.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DemoService.Controllers.Json
 {

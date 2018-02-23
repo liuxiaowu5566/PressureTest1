@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DemoService.Services.Interface.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using Models.Model;
 using Newtonsoft.Json;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoService.Services.Json
+namespace DemoService.Services.Implements.Json
 {
     public class TestService : ITestService
     {

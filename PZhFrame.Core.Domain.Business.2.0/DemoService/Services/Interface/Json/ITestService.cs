@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DemoService.Services.Json
+namespace DemoService.Services.Interface.Json
 {
     public interface ITestService
     {
