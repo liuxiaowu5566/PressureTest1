@@ -10,7 +10,7 @@ namespace DemoService.Controllers.Json
     /// <summary>
     /// 
     /// </summary>
-    [Route("Test")]
+    [Route("Json/Test")]
     public class TestController : Controller
     {
         ITestService service = null;
