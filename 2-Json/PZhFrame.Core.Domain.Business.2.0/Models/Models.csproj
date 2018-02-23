@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Model\新文件夹\**" />
+    <EmbeddedResource Remove="Model\新文件夹\**" />
+    <None Remove="Model\新文件夹\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PZhFrame.Data.DataService" Version="1.0.1" />
+    <PackageReference Include="PZhFrame.Data.Repository" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PZhFrame.ModelLayer.BaseModel\PZhFrame.ModelLayer.BaseModels.csproj" />
+  </ItemGroup>
+
+</Project>

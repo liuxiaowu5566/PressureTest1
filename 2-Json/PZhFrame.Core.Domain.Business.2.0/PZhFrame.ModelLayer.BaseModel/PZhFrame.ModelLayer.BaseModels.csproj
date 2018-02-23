@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PZhFrame.Core.Infrastructure.Lib" Version="1.0.0" />
+    <PackageReference Include="PZhFrame.Core.Infrastructure.Net" Version="2.0.1.1" />
+    <PackageReference Include="PZhFrame.Data.DataService" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PZhFrame.Data.DapperHelper\PZhFrame.Data.DapperHelper.csproj" />
+  </ItemGroup>
+
+</Project>
