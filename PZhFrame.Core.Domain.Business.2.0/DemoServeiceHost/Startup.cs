@@ -1,5 +1,7 @@
 using DemoService.Services.Implements.Json;
+using DemoService.Services.Implements.Zero;
 using DemoService.Services.Interface.Json;
+using DemoService.Services.Interface.Zero;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +26,7 @@ namespace DemoServeiceHost
                 options.Configuration = Configuration["RedisConfig:Host"];
             });
             services.AddTransient<ITestService, TestService>();
+            services.AddTransient<IZeroService, ZeroService>();
             services.AddMvc();
         }
 
