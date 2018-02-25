@@ -1,6 +1,8 @@
 using DemoService.Services.Implements.Json;
+using DemoService.Services.Implements.Vertical;
 using DemoService.Services.Implements.Zero;
 using DemoService.Services.Interface.Json;
+using DemoService.Services.Interface.Vertical;
 using DemoService.Services.Interface.Zero;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,7 @@ namespace DemoServeiceHost
             });
             services.AddTransient<ITestService, TestService>();
             services.AddTransient<IZeroService, ZeroService>();
+            services.AddTransient<IVerticalService, VerticalService>();
             services.AddMvc();
         }
 

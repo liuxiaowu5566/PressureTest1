@@ -61,10 +61,10 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual List<T> Select<T>(object idValue=null)
+        public virtual List<T> Select<T>(object idValue=null,string filename=null)
         {
             // 去缓存服务（层）中取数据
-            return dbHelper.Select<T>(selectSql(idValue),idValue);
+            return dbHelper.Select<T>(selectSql(idValue, filename),idValue);
         }
 
         /// <summary>
@@ -347,6 +347,47 @@ namespace PZhFrame.ModelLayer.BaseModels
         }
 
 
+
+        public virtual List<T> SelectExVertical<T>(int index, int pageSize) where T : class, new()
+        {
+            List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();
+            //Guid tableid = fileds.First().table_id;
+            List<t1_resource> infos = new t1_resource().Select<t1_resource>(index, pageSize,"createtime desc");
+            ConcurrentBag<T> res = new ConcurrentBag<T>();
+            Type typeInfo = typeof(T);
+            var properties = typeInfo.GetProperties().ToList();
+
+            //计算机 内核数量 最大并发数
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+
+
+            //List<FiledAuth> filedAuths = GetFiledAuth(tableName, "0c945d67-c95d-4ecc-8e7a-3e63e040ec7a");
+            Parallel.ForEach(infos, opt, info =>
+            {
+                T model = new T();
+                //List<new_filed_modify_log> filedValues = total.Where(o => o.resource_id == info.id).ToList();
+                List<t1_history> filedValues = new t1_history(true).Select<t1_history>(info.id,"houseid").ToList();
+                Parallel.ForEach(properties, opt, p =>
+                {
+                    t1_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();
+
+                    //if (filedAuths.Where(o => o.id == filed.id).FirstOrDefault().auth)
+                    //{
+                    var value = filedValues.Where(o => o.codeid == filed.id).FirstOrDefault().value;
+                    Task.Run(() => { p.SetValue(model,  value); }).ConfigureAwait(false);
+                    //}
+                });
+                res.Add(model);
+            });
+
+            return res.ToList();
+        }
+
+
+
         public virtual List<T> GetJson<T>(int index, int pageSize) where T:class,new()
         {
 
@@ -409,12 +450,12 @@ namespace PZhFrame.ModelLayer.BaseModels
         {
             return $"select count(0) from {schema}.{tableName}";
         }
-        private string selectSql(object resourceIdValue = null)
+        private string selectSql(object resourceIdValue = null,string filename= "resource_id")
         {
             if(resourceIdValue == null)
                 return $"select * from {schema}.{tableName}";
             else
-                return $"select * from {schema}.{tableName} where resource_id=@id";
+                return $"select * from {schema}.{tableName} where {filename}=@id";
         }
 
         private string selectSql(int index, int pageSize, string orderFiled = "modifytime desc")
