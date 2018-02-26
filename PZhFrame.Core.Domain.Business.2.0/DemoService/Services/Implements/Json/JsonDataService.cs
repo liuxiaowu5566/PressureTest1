@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -30,27 +31,33 @@ namespace DemoService.Services.Implements.Json
         public ResponseModel<t2_house_part_expand> GetJsonHousePart(int index, int pageSize)
         {
             string sql = $"select jsonstr from t2_house order by id offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
-            List<t2_house_part_expand> t2modelList = new List<t2_house_part_expand>();
+            ConcurrentBag<t2_house_part_expand> t2modelList = new ConcurrentBag<t2_house_part_expand>();
             var result = dataService.GetList<t2_house>(sql);
-            foreach (var item in result)
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+            Parallel.ForEach(result, opt, item =>
             {
                 var model = JsonConvert.DeserializeObject<t2_house_expand>(item.jsonstr);
-
-                T2_ModifyLogModel column4 = model.column4.OrderByDescending(a => a.Column207).FirstOrDefault();
-                T2_ModifyLogModel column5 = model.column5.OrderByDescending(a => a.Column207).FirstOrDefault();
-                T2_ModifyLogModel column6 = model.column6.OrderByDescending(a => a.Column207).FirstOrDefault();
-                T2_ModifyLogModel column7 = model.column7.OrderByDescending(a => a.Column207).FirstOrDefault();
-                T2_ModifyLogModel column8 = model.column8.OrderByDescending(a => a.Column207).FirstOrDefault();
                 t2_house_part_expand modeltemp = new t2_house_part_expand();
+                Parallel.Invoke(() =>
+                {
+                    T2_ModifyLogModel column4 = model.column4.OrderByDescending(a => a.Column207).FirstOrDefault();
+                    T2_ModifyLogModel column5 = model.column5.OrderByDescending(a => a.Column207).FirstOrDefault();
+                    T2_ModifyLogModel column6 = model.column6.OrderByDescending(a => a.Column207).FirstOrDefault();
+                    T2_ModifyLogModel column7 = model.column7.OrderByDescending(a => a.Column207).FirstOrDefault();
+                    T2_ModifyLogModel column8 = model.column8.OrderByDescending(a => a.Column207).FirstOrDefault();
                     Mapper(modeltemp, model);
-                modeltemp.column4 = column4.Column205;
-                modeltemp.column5 = column5.Column205;
-                modeltemp.column6 = column6.Column205;
-                modeltemp.column7 = column7.Column205;
-                modeltemp.column8 = column8.Column205;
-                t2modelList.Add(modeltemp);
-            }
-            ResponseModel<t2_house_part_expand> resModel = new ResponseModel<t2_house_part_expand>(t2modelList);
+                    modeltemp.column4 = column4.Column205;
+                    modeltemp.column5 = column5.Column205;
+                    modeltemp.column6 = column6.Column205;
+                    modeltemp.column7 = column7.Column205;
+                    modeltemp.column8 = column8.Column205; t2modelList.Add(modeltemp);
+                });
+            });
+           
+            ResponseModel<t2_house_part_expand> resModel = new ResponseModel<t2_house_part_expand>(t2modelList.ToList());
             return resModel;
         }
         /// <summary>
@@ -86,7 +93,6 @@ namespace DemoService.Services.Implements.Json
         /// <returns></returns>
         public static D Mapper<D, S>(D d, S s)
         {
-            //D d = Activator.CreateInstance<D>(); //构造新实例
             try
             {
                 var Types = s.GetType();//获得类型  

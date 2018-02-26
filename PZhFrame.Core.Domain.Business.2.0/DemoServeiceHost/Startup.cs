@@ -32,6 +32,7 @@ namespace DemoServeiceHost
             services.AddTransient<IZeroService, ZeroService>();
             services.AddTransient<IVerticalService, VerticalService>();
             services.AddTransient<IJsonDataService, JsonDataService>();
+            services.AddTransient<INineJsonService, NineJsonService>();            
             services.AddMvc();
         }
 
