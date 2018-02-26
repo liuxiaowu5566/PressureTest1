@@ -1,9 +1,11 @@
 using DemoService.Services.Implements.Json;
 using DemoService.Services.Implements.Vertical;
 using DemoService.Services.Implements.Zero;
+using DemoService.Services.Implements.ZeroJson;
 using DemoService.Services.Interface.Json;
 using DemoService.Services.Interface.Vertical;
 using DemoService.Services.Interface.Zero;
+using DemoService.Services.Interface.ZeroJson;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +34,8 @@ namespace DemoServeiceHost
             services.AddTransient<IZeroService, ZeroService>();
             services.AddTransient<IVerticalService, VerticalService>();
             services.AddTransient<IJsonDataService, JsonDataService>();
-            services.AddTransient<INineJsonService, NineJsonService>();            
+            services.AddTransient<INineJsonService, NineJsonService>();
+            services.AddTransient<IZeroJsonService, ZeroJsonService>();
             services.AddMvc();
         }
 

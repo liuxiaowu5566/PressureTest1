@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,6 +63,17 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        public virtual List<T> Select<T>(string sql)
+        {
+            // 去缓存服务（层）中取数据
+            return dbHelper.Select<T>(sql);
+        }
+
+        /// <summary>
+        /// select 同步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual List<T> Select<T>(object idValue=null,string filename=null)
         {
             // 去缓存服务（层）中取数据
@@ -79,6 +91,25 @@ namespace PZhFrame.ModelLayer.BaseModels
             return dbHelper.Select<T>(selectSql(index, pageSize, orderFiled));
         }
 
+        /// <summary>
+        /// select 同步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual List<T> SelectPart<T>(string tableName, int index, int pageSize, string orderFiled = " modifytime desc ")
+        {
+            Type typeInfo = typeof(T);
+            var pros = typeInfo.GetProperties().ToList();
+
+            string columns = " ";
+            foreach (PropertyInfo item in typeInfo.GetProperties())
+            {
+                columns = columns + item.Name + ", ";
+            }
+            columns = columns.Substring(0, columns.Length - 2);
+            // 去缓存服务（层）中取数据
+            return dbHelper.Select<T>(selectSql(columns, tableName, index, pageSize, orderFiled));
+        }
 
         /// <summary>
         /// select 同步 Expression 暂未实现
@@ -507,6 +538,41 @@ namespace PZhFrame.ModelLayer.BaseModels
             return dbHelper.ExecuteStoredProcedureWithParms<T>(storedProcedureName, dynamicParameters);
         }
 
+        
+
+        /// <summary>
+        /// 反射实现两个类的对象之间相同属性的值的复制
+        /// 适用于没有新建实体之间
+        /// </summary>
+        /// <typeparam name="D">返回的实体</typeparam>
+        /// <typeparam name="S">数据源实体</typeparam>
+        /// <param name="d">返回的实体</param>
+        /// <param name="s">数据源实体</param>
+        /// <returns></returns>
+        public static D Mapper<D, S>(D d, S s)
+        {
+            try
+            {
+                var Types = s.GetType();//获得类型  
+                var Typed = typeof(D);
+                foreach (PropertyInfo sp in Types.GetProperties())//获得类型的属性字段  
+                {
+                    foreach (PropertyInfo dp in Typed.GetProperties())
+                    {
+                        if (dp.Name == sp.Name && dp.PropertyType == sp.PropertyType && dp.Name != "Error" && dp.Name != "Item")//判断属性名是否相同  
+                        {
+                            dp.SetValue(d, sp.GetValue(s, null), null);//获得s对象属性的值复制给d对象的属性  
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return d;
+        }
+
         #region private methods
 
         private dynamic convertValue(string uType, string value)
@@ -556,6 +622,11 @@ namespace PZhFrame.ModelLayer.BaseModels
         private string selectSql(int index, int pageSize, string orderFiled = "modifytime desc")
         {
             return $"select * from {schema}.{tableName} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
+        }
+
+        private string selectSql(string columns, string tableN, int index, int pageSize, string orderFiled = "modifytime desc")
+        {
+            return $"select {columns} from {schema}.{tableN} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
         }
 
         private List<FiledAuth> GetFiledAuth(string filedId, string accountId)

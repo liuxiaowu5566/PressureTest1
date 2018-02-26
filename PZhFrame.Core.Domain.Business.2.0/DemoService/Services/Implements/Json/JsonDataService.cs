@@ -48,7 +48,7 @@ namespace DemoService.Services.Implements.Json
                     T2_ModifyLogModel column6 = model.column6.OrderByDescending(a => a.Column207).FirstOrDefault();
                     T2_ModifyLogModel column7 = model.column7.OrderByDescending(a => a.Column207).FirstOrDefault();
                     T2_ModifyLogModel column8 = model.column8.OrderByDescending(a => a.Column207).FirstOrDefault();
-                    Mapper(modeltemp, model);
+                    BaseModel.Mapper(modeltemp, model);
                     modeltemp.column4 = column4.Column205;
                     modeltemp.column5 = column5.Column205;
                     modeltemp.column6 = column6.Column205;
@@ -69,15 +69,17 @@ namespace DemoService.Services.Implements.Json
         {
             string str = $"select jsonstr from t2_house where JSON_VALUE(jsonstr,'$.Column1')='{id}'";
             var result = dataService.GetSingle<t2_house>(str);
-            t2_house_expand ss = JsonConvert.DeserializeObject<t2_house_expand>(result.jsonstr);
+            t2_house_expand t2Json = JsonConvert.DeserializeObject<t2_house_expand>(result.jsonstr);
+
             t2_house_expand_copy exp = new t2_house_expand_copy();
-            Mapper(exp,ss);
-            T2_ModifyLogModel column4 = ss.column4.OrderByDescending(a => a.Column207).FirstOrDefault();
-            T2_ModifyLogModel column5 = ss.column5.OrderByDescending(a => a.Column207).FirstOrDefault();
-            T2_ModifyLogModel column6 = ss.column6.OrderByDescending(a => a.Column207).FirstOrDefault();
-            T2_ModifyLogModel column7 = ss.column7.OrderByDescending(a => a.Column207).FirstOrDefault();
-            T2_ModifyLogModel column8 = ss.column8.OrderByDescending(a => a.Column207).FirstOrDefault();
-            T2_ModifyJsonModel column10= ss.column10.OrderByDescending(a => a.Column204).FirstOrDefault();
+            BaseModel.Mapper(exp, t2Json);
+
+            T2_ModifyLogModel column4 = t2Json.column4.OrderByDescending(a => a.Column207).FirstOrDefault();
+            T2_ModifyLogModel column5 = t2Json.column5.OrderByDescending(a => a.Column207).FirstOrDefault();
+            T2_ModifyLogModel column6 = t2Json.column6.OrderByDescending(a => a.Column207).FirstOrDefault();
+            T2_ModifyLogModel column7 = t2Json.column7.OrderByDescending(a => a.Column207).FirstOrDefault();
+            T2_ModifyLogModel column8 = t2Json.column8.OrderByDescending(a => a.Column207).FirstOrDefault();
+            T2_ModifyJsonModel column10= t2Json.column10.OrderByDescending(a => a.Column204).FirstOrDefault();
             exp.column4 = column4.Column205;
             exp.column5 = column5.Column205;
             exp.column6 = column6.Column205;
@@ -85,34 +87,6 @@ namespace DemoService.Services.Implements.Json
             exp.column8 = column8.Column205;
             exp.column10 = column10;
             return exp;
-        }
-        /// <summary>
-        /// copyentity 
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static D Mapper<D, S>(D d, S s)
-        {
-            try
-            {
-                var Types = s.GetType();//获得类型  
-                var Typed = typeof(D);
-                foreach (PropertyInfo sp in Types.GetProperties())//获得类型的属性字段  
-                {
-                    foreach (PropertyInfo dp in Typed.GetProperties())
-                    {
-                        if (dp.Name == sp.Name && dp.PropertyType == sp.PropertyType && dp.Name != "Error" && dp.Name != "Item")//判断属性名是否相同  
-                        {
-                            dp.SetValue(d, sp.GetValue(s, null), null);//获得s对象属性的值复制给d对象的属性  
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return d;
         }
     }
 }
