@@ -1,4 +1,7 @@
-﻿using DemoService.Services.Implements.Json;
+﻿/*
+ 作者：杨川 
+ */
+using DemoService.Services.Implements.Json;
 using DemoService.Services.Interface.Json;
 using DemoService.Services.Interface.ZeroJson;
 using Models.Model;
@@ -38,35 +41,29 @@ namespace DemoService.Services.Implements.ZeroJson
         {
             // 获取修改的列
             List<t4_code> fileds = new t4_code().Select<t4_code>().ToList();
-
             // 获取前9项实体属性
             Type typeInfo = typeof(T4_House_Part);
             var properties = typeInfo.GetProperties().ToList();
-
             // 获取房源
-            List<T4_House_Part> houseList = new T4_House_Part().SelectPart<T4_House_Part>(typeof(t6_house).Name, index, pagesize, "column1");
+            List<T4_House_Part> houseList = new T4_House_Part().SelectPart<T4_House_Part>(typeof(T4_House).Name, index, pagesize, "column1");
             Parallel.ForEach(houseList, info =>
            {
                // 获取修改历史信息
                List<t4_json> jsonList = new t4_json(true).Select<t4_json>(info.column1, "houseid");
-
                Parallel.ForEach(jsonList, p =>
                {
                    List<T4_ModifyJsonModel> modifyInfoList = 
                    JsonConvert.DeserializeObject<List<T4_ModifyJsonModel>>(p.jsonstr);
                    T4_ModifyJsonModel mdify = modifyInfoList.OrderByDescending(a => a.Column207).FirstOrDefault();
-
                    t4_code columnName = fileds.Where(o => o.id == p.codeid).FirstOrDefault();
                    PropertyInfo proInfo = properties.Where(o => o.Name == columnName.name).FirstOrDefault();
                    if (proInfo != null)
                    {
                        proInfo.SetValue(info, mdify.Column205);
                    }
-
                });
 
            });
-
             ResponseModel<T4_House_Part> resModel = new ResponseModel<T4_House_Part>(houseList);
             return resModel;
         }
@@ -83,13 +80,10 @@ namespace DemoService.Services.Implements.ZeroJson
             if (modelList.Count > 0)
             {
                 T4_House houseModel = modelList[0];
-
                 // 获取房屋实体类属性
                 Type typeInfo = typeof(T4_House);
-                var properties = typeInfo.GetProperties().ToList();
-                
+                var properties = typeInfo.GetProperties().ToList();                
                 string sql = "";
-
                 // 获取可修改的列
                 List<t4_code> modifyColumns = new t4_code().Select<t4_code>();
                 Parallel.ForEach(modifyColumns, p =>
@@ -107,13 +101,11 @@ namespace DemoService.Services.Implements.ZeroJson
                         proInfo.SetValue(houseModel, mdify.Column205);
                     }
                 });
-
                 // 获取电话信息
                 List<t4_tel> telList = new t4_tel().Select<t4_tel>(houseModel.column10, "column202");
                 T4_House_Show houseShowModel = new T4_House_Show();
                 BaseModel.Mapper(houseShowModel, houseModel);
                 houseShowModel.column10 = telList;
-
                 return houseShowModel;
             }
             return null;

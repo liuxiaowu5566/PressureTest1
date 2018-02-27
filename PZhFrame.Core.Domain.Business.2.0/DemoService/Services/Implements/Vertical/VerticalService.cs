@@ -1,4 +1,7 @@
-﻿using DemoService.Services.Interface.Vertical;
+﻿/*
+ 作者:孙靖武
+ */
+using DemoService.Services.Interface.Vertical;
 using Models.Model;
 using PZhFrame.Data.Repository.Extension;
 using PZhFrame.ModelLayer.BaseModels;
