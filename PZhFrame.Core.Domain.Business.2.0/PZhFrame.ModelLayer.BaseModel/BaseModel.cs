@@ -74,6 +74,17 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        public async virtual Task<List<T>> SelectAsync<T>(string sql)
+        {
+            // 去缓存服务（层）中取数据
+            return await dbHelper.SelectAsync<T>(sql);
+        }
+
+        /// <summary>
+        /// select 同步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual List<T> Select<T>(object idValue=null,string filename=null)
         {
             // 去缓存服务（层）中取数据
