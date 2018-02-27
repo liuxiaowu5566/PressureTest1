@@ -31,7 +31,7 @@ namespace DemoService.Controllers.ZeroJson
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet, Route("QueryPage/{index}/{pagesize}")]
-        public ResponseModel<T4_House_Part> QueryPage(int index = 1, int pagesize = 15)
+        public Task<ResponseModel<T4_House_Part>> QueryPage(int index = 1, int pagesize = 15)
         {
             return  zeroJsonService.QueryPage(index, pagesize);
         }
@@ -42,7 +42,7 @@ namespace DemoService.Controllers.ZeroJson
         /// <param name="houseId"></param>
         /// <returns></returns>
         [HttpGet, Route("QueryInformation/{houseId}")]
-        public T4_House_Show QueryInformation(string houseId)
+        public Task<T4_House_Show> QueryInformation(string houseId)
         {
             return zeroJsonService.QueryInformation(houseId);
         }
