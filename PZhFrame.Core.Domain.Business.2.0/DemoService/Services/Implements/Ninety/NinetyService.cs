@@ -8,6 +8,7 @@ using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DemoService.Services.Implements.Ninety
 {
@@ -20,7 +21,7 @@ namespace DemoService.Services.Implements.Ninety
             dataService = new DataService(connection.ConnString(), connection.SqlType());
         }
 
-        public ResponseModel<t1_house_nunety> QueryPage(int index, int pagesize)
+        public async Task<ResponseModel<t1_house_nunety>> QueryPage(int index, int pagesize)
         {
             string sqlName = $@"declare @sql varchar(max)
                                 select @sql = ISNULL(@sql+',','')+name

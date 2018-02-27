@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Model;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DemoService.Controllers.ZeroX
 {
@@ -27,14 +28,14 @@ namespace DemoService.Controllers.ZeroX
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet, Route("QueryPage1_9/{index}/{pagesize}")]
-        public ResponseModel<t6_house1_9> QueryPage1_9(int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t6_house1_9>> QueryPage1_9(int index = 1, int pagesize = 15)
         {
-            return zeroXService.QueryPage1_9(index, pagesize);
+            return await zeroXService.QueryPage1_9(index, pagesize);
         }
         [HttpGet, Route("QP1_9/{index}/{pagesize}")]
-        public ResponseModel<t6_house1_9> QP1_9(int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t6_house1_9>> QP1_9(int index = 1, int pagesize = 15)
         {
-            return zeroXService.QP1_9(index, pagesize);
+            return await zeroXService.QP1_9(index, pagesize);
         }
 
         /// <summary>
@@ -44,9 +45,9 @@ namespace DemoService.Controllers.ZeroX
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet,Route("QueryRecord/{houseId}/{name}")]
-        public List<string> QueryRecord(string houseId,string name)
+        public async Task<List<string>> QueryRecord(string houseId,string name)
         {
-            return zeroXService.que(houseId,name);
+            return await zeroXService.que(houseId,name);
         }
     }
 }
