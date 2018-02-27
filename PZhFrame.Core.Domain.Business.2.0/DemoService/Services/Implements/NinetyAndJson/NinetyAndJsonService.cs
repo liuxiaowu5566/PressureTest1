@@ -9,6 +9,7 @@ using PZhFrame.ModelLayer.BaseModels;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace DemoService.Services.Implements.NinetyAndJson
 {
@@ -20,7 +21,7 @@ namespace DemoService.Services.Implements.NinetyAndJson
         {
             dataService = new DataService(connection.ConnString(), connection.SqlType());
         }
-        public ResponseModel<t3_house_nunety> QueryPage(int index, int pagesize)
+        public async Task<ResponseModel<t3_house_nunety>> QueryPage(int index, int pagesize)
         {
             string sqlName = $@"declare @sql varchar(max)
                                 select @sql = ISNULL(@sql+',','')+name

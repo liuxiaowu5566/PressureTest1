@@ -6,6 +6,7 @@ using DemoService.Services.Interface.Ninety;
 using Microsoft.AspNetCore.Mvc;
 using Models.Model;
 using PZhFrame.ModelLayer.Models.Models;
+using System.Threading.Tasks;
 
 namespace DemoService.Controllers.Ninety
 {
@@ -25,9 +26,9 @@ namespace DemoService.Controllers.Ninety
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet, Route("QueryPage/{index}/{pagesize}")]
-        public ResponseModel<t1_house_nunety> QueryPage(int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t1_house_nunety>> QueryPage(int index = 1, int pagesize = 15)
         {
-            return zeroService.QueryPage(index, pagesize);
+            return await zeroService.QueryPage(index, pagesize);
         }
     }
 }
