@@ -6,7 +6,7 @@ using PZhFrame.ModelLayer.BaseModels;
 
 namespace PZhFrame.ModelLayer.Models.Models
 {
-    public partial class t6_house : BaseModel
+    public partial class t6_house1_9 : BaseModel
     {
 
     }
