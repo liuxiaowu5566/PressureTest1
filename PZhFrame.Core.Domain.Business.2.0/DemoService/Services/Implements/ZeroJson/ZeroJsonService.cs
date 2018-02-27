@@ -1,4 +1,7 @@
-﻿using DemoService.Services.Implements.Json;
+﻿/*
+ 作者：杨川 
+ */
+using DemoService.Services.Implements.Json;
 using DemoService.Services.Interface.Json;
 using DemoService.Services.Interface.ZeroJson;
 using Models.Model;
@@ -44,7 +47,7 @@ namespace DemoService.Services.Implements.ZeroJson
             var properties = typeInfo.GetProperties().ToList();
 
             // 获取房源
-            List<T4_House_Part> houseList = new T4_House_Part().SelectPart<T4_House_Part>(typeof(t6_house).Name, index, pagesize, "column1");
+            List<T4_House_Part> houseList = new T4_House_Part().SelectPart<T4_House_Part>(typeof(T4_House).Name, index, pagesize, "column1");
             Parallel.ForEach(houseList, info =>
            {
                // 获取修改历史信息
