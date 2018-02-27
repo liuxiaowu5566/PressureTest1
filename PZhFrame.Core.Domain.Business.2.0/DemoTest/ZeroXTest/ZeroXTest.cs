@@ -1,20 +1,15 @@
-﻿using DemoService.Services.Implements.Json;
-using DemoService.Services.Implements.Zero;
-using DemoService.Services.Interface.Json;
-using DemoService.Services.Interface.Zero;
-using PZhFrame.Data.DataService;
-using PZhFrame.ModelLayer.BaseModels;
+﻿using DemoService.Services.Implements.ZeroX;
+using DemoService.Services.Interface.ZeroX;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace DemoTest.ZeroTest
+namespace DemoTest.ZeroXTest
 {
-    public class ZeroTest
+    public class ZeroXTest
     {
-        IZeroService zeroService = new ZeroService();
-        public ZeroTest()
+        IZeroXService zeroXService = new ZeroXService();
+        public ZeroXTest()
         {
 
         }
@@ -26,7 +21,7 @@ namespace DemoTest.ZeroTest
             for (int i = 1; i < 500; i = i + 100)
             {
                 int time = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                zeroService.QP1_9(i, 15);
+                zeroXService.QP1_9(i, 15);
                 int t = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
                 listTime.Add(t - time);
             }
@@ -39,7 +34,7 @@ namespace DemoTest.ZeroTest
             for (int i = 1; i < 500; i = i + 100)
             {
                 int time = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                zeroService.QueryPage1_9(i,15);
+                zeroXService.QueryPage1_9(i,15);
                 int t = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
                 listTime.Add(t - time);
             }

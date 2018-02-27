@@ -1,8 +1,9 @@
-﻿using Models.Model;
+﻿/*
+ 作者：徐剑
+ */
+
+using Models.Model;
 using PZhFrame.ModelLayer.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DemoService.Services.Interface.NinetyAndJson
 {
