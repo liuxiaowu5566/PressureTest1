@@ -1,19 +1,20 @@
-﻿using DemoService.Services.Implements.Ninety;
-using DemoService.Services.Interface.Ninety;
+﻿using DemoService.Services.Implements.ZeroJson;
+using DemoService.Services.Interface.ZeroJson;
 using Models.Model;
-using PZhFrame.ModelLayer.Models.Models;
+using Models.Model.t4;
+using Models.WebModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Xunit;
 
-namespace DemoTest.Ninety
+namespace DemoTest.ZeroJson
 {
-    public class NinetyTest
+    public class ZeroJsonTest
     {
-        INinetyService ninetyService = new NinetyService();
-        public NinetyTest()
+        IZeroJsonService zeroJsonService = new ZeroJsonService();
+        public ZeroJsonTest()
         {
 
         }
@@ -22,12 +23,12 @@ namespace DemoTest.Ninety
         public async void QueryPageTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
-            List<ResponseModel<t1_house_nunety>> result = new List<ResponseModel<t1_house_nunety>>();
+            
             for (int i = 1; i < 500; i = i + 100)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(await ninetyService.QueryPage(i, 15));
+                ResponseModel<T4_House_Part> result= await zeroJsonService.QueryPage(i, 15);
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }

@@ -1,7 +1,10 @@
 ﻿using DemoService.Services.Implements.NinetyAndJson;
 using DemoService.Services.Interface.NinetyAndJson;
+using Models.Model;
+using PZhFrame.ModelLayer.Models.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Xunit;
 
@@ -16,15 +19,17 @@ namespace DemoTest.NinetyAndJson
         }
 
         [Fact]
-        public void QueryPageTime()
+        public async void QueryPageTime()
         {
-            List<int> listTime = new List<int>();
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ResponseModel<t3_house_nunety>> result = new List<ResponseModel<t3_house_nunety>>();
             for (int i = 10; i < 60; i = i + 10)
             {
-                int time = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                ninetyAndJsonService.QueryPage(i, 15);
-                int t = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                listTime.Add(t - time);
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                result.Add(await ninetyAndJsonService.QueryPage(i, 15));
+                sw.Stop();
+                listTime.Add(sw.Elapsed);
             }
         }
     }
