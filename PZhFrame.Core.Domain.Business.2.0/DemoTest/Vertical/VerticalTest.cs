@@ -1,4 +1,7 @@
-﻿using DemoService.Services.Implements.Vertical;
+﻿/*
+ 作者:孙靖武
+ */
+using DemoService.Services.Implements.Vertical;
 using DemoService.Services.Interface.Vertical;
 using Models.Model;
 using System;
