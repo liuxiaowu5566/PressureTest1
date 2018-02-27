@@ -1,8 +1,9 @@
-﻿using System;
+﻿using PZhFrame.ModelLayer.BaseModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PZhFrame.ModelLayer.BaseModels
+namespace Models.Model.t1
 {
     public class t1_history:BaseModel
     {

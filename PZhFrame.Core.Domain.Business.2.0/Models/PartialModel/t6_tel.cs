@@ -4,7 +4,7 @@ using System.Text;
 using PZhFrame.Data.Repository.Extension;
 using PZhFrame.ModelLayer.BaseModels;
 
-namespace PZhFrame.ModelLayer.Models.Models
+namespace Models.Models.t6
 {
     public partial class t6_tel : BaseModel
     {

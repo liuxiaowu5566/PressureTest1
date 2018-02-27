@@ -7,6 +7,7 @@ using System.Text;
 using DemoService.Services.Interface.Json;
 using Microsoft.AspNetCore.Mvc;
 using Models.Model;
+using Models.Model.t2;
 
 namespace DemoService.Controllers.Json
 {

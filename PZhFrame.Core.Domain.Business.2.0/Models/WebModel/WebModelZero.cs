@@ -1,4 +1,5 @@
-﻿using PZhFrame.Data.DataService;
+﻿using Models.Model.t6;
+using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
 using PZhFrame.ModelLayer.Models.Models;
 using System;

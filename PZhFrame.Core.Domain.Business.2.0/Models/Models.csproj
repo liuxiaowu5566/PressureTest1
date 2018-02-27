@@ -33,4 +33,11 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\t2\" />
+    <Folder Include="Model\t3\" />
+    <Folder Include="Model\t4\" />
+    <Folder Include="Model\t6\" />
+  </ItemGroup>
+
 </Project>

@@ -36,7 +36,7 @@ namespace DemoServeiceHost
             {
                 options.Configuration = Configuration["RedisConfig:Host"];
             });
-            services.AddTransient<ITestService, TestService>();
+            
             services.AddTransient<IZeroService, ZeroService>();
             services.AddTransient<IZeroXService, ZeroXService>();
             services.AddTransient<IVerticalService, VerticalService>();

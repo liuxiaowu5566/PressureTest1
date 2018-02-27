@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Models.Model
+namespace Models.Model.t2
 {
     public partial class t2_house 
     {

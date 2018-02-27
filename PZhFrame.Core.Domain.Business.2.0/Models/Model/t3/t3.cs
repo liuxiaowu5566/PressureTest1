@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace PZhFrame.ModelLayer.BaseModels
+namespace Models.Model.t3
 {
     public class T3
     {
