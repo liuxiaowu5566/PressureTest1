@@ -1,11 +1,15 @@
-﻿using PZhFrame.Data.DataService;
+﻿using System;
+using System.Linq;
+using System.Text;
+using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
-using System;
-namespace PZhFrame.ModelLayer.BaseModels
+using PZhFrame.ModelLayer.BaseModels;
+
+namespace Models.Model.t4
 {
-    public partial class new_resource_json : BaseModel
+    public partial class t4_code : BaseModel
     {
-           public new_resource_json(){
+           public t4_code(){
 
 
            }
@@ -16,17 +20,15 @@ namespace PZhFrame.ModelLayer.BaseModels
            /// </summary>           
 	   [ExplicitKey]    
            [Head("id","-")]
-           public Guid id {get;set;}
+           public int id {get;set;}
 
-           
            /// <summary>
            /// Desc:
            /// Default:
            /// Nullable:True
            /// </summary>           
-           [Head("jsonvalue", "-")]
-           public string jsonvalue { get;set;}
-
+           [Head("name","-")]
+           public string name {get;set;}
 
     }
 }

@@ -7,7 +7,7 @@ using PZhFrame.Data.Repository.Extension;
 using PZhFrame.ModelLayer.BaseModels;
 
 
-namespace Models.Model
+namespace Models.Model.t2
 {
     
     public partial class t2_house_part_expand : BaseModel

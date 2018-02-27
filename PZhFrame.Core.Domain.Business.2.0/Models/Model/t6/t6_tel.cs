@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
-namespace PZhFrame.ModelLayer.Models.Models
+namespace Models.Model.t6
 {
     public partial class t6_tel
     {

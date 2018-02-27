@@ -34,7 +34,7 @@ namespace DemoServeiceHost
             {
                 options.Configuration = Configuration["RedisConfig:Host"];
             });
-            services.AddTransient<ITestService, TestService>();
+            
             services.AddTransient<IZeroService, ZeroService>();
             services.AddTransient<IVerticalService, VerticalService>();
             services.AddTransient<IJsonDataService, JsonDataService>();

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Text;
 using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
-namespace PZhFrame.ModelLayer.BaseModels
+using PZhFrame.ModelLayer.BaseModels;
+
+namespace Models.Model.t4
 {
     public partial class t4_tel:BaseModel
     {

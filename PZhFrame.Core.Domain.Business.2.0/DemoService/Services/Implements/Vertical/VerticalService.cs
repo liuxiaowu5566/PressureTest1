@@ -3,11 +3,15 @@
  */
 using DemoService.Services.Interface.Vertical;
 using Models.Model;
+using Models.Model.t1;
 using PZhFrame.Data.Repository.Extension;
 using PZhFrame.ModelLayer.BaseModels;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DemoService.Services.Implements.Vertical
 {
@@ -30,9 +34,47 @@ namespace DemoService.Services.Implements.Vertical
         /// <returns></returns>
         public ResponseModel<ColumnModel> GetHouse(int index, int pageSize)
         {
-            List<ColumnModel> hList = new b_house_basic_attribute().SelectExVertical<ColumnModel>(index, pageSize);
+            List<ColumnModel> hList = selectExVertical<ColumnModel>(index, pageSize);
             ResponseModel<ColumnModel> resModel = new ResponseModel<ColumnModel>(hList);
             return resModel;
+        }
+
+        private List<T> selectExVertical<T>(int index, int pageSize) where T : class, new()
+        {
+            List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();
+            //Guid tableid = fileds.First().table_id;
+            List<t1_resource> infos = new t1_resource().Select<t1_resource>(index, pageSize, "createtime desc");
+            ConcurrentBag<T> res = new ConcurrentBag<T>();
+            Type typeInfo = typeof(T);
+            var properties = typeInfo.GetProperties().ToList();
+
+            //计算机 内核数量 最大并发数
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+
+
+            //List<FiledAuth> filedAuths = GetFiledAuth(tableName, "0c945d67-c95d-4ecc-8e7a-3e63e040ec7a");
+            Parallel.ForEach(infos, opt, info =>
+            {
+                T model = new T();
+                //List<new_filed_modify_log> filedValues = total.Where(o => o.resource_id == info.id).ToList();
+                List<t1_history> filedValues = new t1_history(true).Select<t1_history>(info.id, "houseid").ToList();
+                Parallel.ForEach(properties, opt, p =>
+                {
+                    t1_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();
+
+                    //if (filedAuths.Where(o => o.id == filed.id).FirstOrDefault().auth)
+                    //{
+                    var value = filedValues.Where(o => o.codeid == filed.id).FirstOrDefault().value;
+                    Task.Run(() => { p.SetValue(model, value); }).ConfigureAwait(false);
+                    //}
+                });
+                res.Add(model);
+            });
+
+            return res.ToList();
         }
 
     }
