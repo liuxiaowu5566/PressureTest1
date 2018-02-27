@@ -6,6 +6,7 @@ using DemoService.Services.Interface.NinetyAndJson;
 using Microsoft.AspNetCore.Mvc;
 using Models.Model;
 using PZhFrame.ModelLayer.Models.Models;
+using System.Threading.Tasks;
 
 namespace DemoService.Controllers.NinetyAndJson
 {
@@ -25,9 +26,9 @@ namespace DemoService.Controllers.NinetyAndJson
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet, Route("QueryPage/{index}/{pagesize}")]
-        public ResponseModel<t3_house_nunety> QueryPage(int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t3_house_nunety>> QueryPage(int index = 1, int pagesize = 15)
         {
-            return ninetyAndJsonService.QueryPage(index, pagesize);
+            return await ninetyAndJsonService.QueryPage(index, pagesize);
         }
     }
 }

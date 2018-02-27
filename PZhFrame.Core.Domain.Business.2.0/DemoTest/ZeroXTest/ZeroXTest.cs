@@ -1,7 +1,10 @@
 ﻿using DemoService.Services.Implements.ZeroX;
 using DemoService.Services.Interface.ZeroX;
+using Models.Model;
+using PZhFrame.ModelLayer.Models.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Xunit;
 
 namespace DemoTest.ZeroXTest
@@ -15,28 +18,32 @@ namespace DemoTest.ZeroXTest
         }
 
         [Fact]
-        public void QP1_9Time()
+        public async void QP1_9Time()
         {
-            List<int> listTime = new List<int>();
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ResponseModel<t6_house1_9>> result = new List<ResponseModel<t6_house1_9>>();
             for (int i = 1; i < 500; i = i + 100)
             {
-                int time = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                zeroXService.QP1_9(i, 15);
-                int t = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                listTime.Add(t - time);
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                result.Add(await zeroXService.QP1_9(i, 15));
+                sw.Stop();
+                listTime.Add(sw.Elapsed);
             }
         }
 
         [Fact]
-        public void QueryPage1_9Time()
+        public async void QueryPage1_9Time()
         {
-            List<int> listTime = new List<int>();
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ResponseModel<t6_house1_9>> result = new List<ResponseModel<t6_house1_9>>();
             for (int i = 1; i < 500; i = i + 100)
             {
-                int time = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                zeroXService.QueryPage1_9(i,15);
-                int t = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
-                listTime.Add(t - time);
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                result.Add(await zeroXService.QueryPage1_9(i,15));
+                sw.Stop();
+                listTime.Add(sw.Elapsed);
             }
         }
     }

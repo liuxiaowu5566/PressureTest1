@@ -4,11 +4,12 @@
 
 using Models.Model;
 using PZhFrame.ModelLayer.Models.Models;
+using System.Threading.Tasks;
 
 namespace DemoService.Services.Interface.NinetyAndJson
 {
     public interface INinetyAndJsonService
     {
-        ResponseModel<t3_house_nunety> QueryPage(int index, int pagesize);
+        Task<ResponseModel<t3_house_nunety>> QueryPage(int index, int pagesize);
     }
 }
