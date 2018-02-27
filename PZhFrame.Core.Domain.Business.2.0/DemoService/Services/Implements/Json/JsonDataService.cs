@@ -32,11 +32,11 @@ namespace DemoService.Services.Implements.Json
         /// <param name="index"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public ResponseModel<t2_house_part_expand> GetJsonHousePart(int index, int pageSize)
+        public async Task<ResponseModel<t2_house_part_expand>> GetJsonHousePart(int index, int pageSize)
         {
             string sql = $"select jsonstr from t2_house order by id offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
             ConcurrentBag<t2_house_part_expand> t2modelList = new ConcurrentBag<t2_house_part_expand>();
-            var result = dataService.GetList<t2_house>(sql);
+            var result = await dataService.GetListAsync<t2_house>(sql);
             ParallelOptions opt = new ParallelOptions
             {
                 MaxDegreeOfParallelism = 2
@@ -69,10 +69,10 @@ namespace DemoService.Services.Implements.Json
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public t2_house_expand_copy GetJsonHouse(string id)
+        public async Task<t2_house_expand_copy> GetJsonHouse(string id)
         {
             string str = $"select jsonstr from t2_house where JSON_VALUE(jsonstr,'$.Column1')='{id}'";
-            var result = dataService.GetSingle<t2_house>(str);
+            var result = await dataService.GetSingleAsync<t2_house>(str);
             t2_house_expand t2Json = JsonConvert.DeserializeObject<t2_house_expand>(result.jsonstr);
 
             t2_house_expand_copy exp = new t2_house_expand_copy();
