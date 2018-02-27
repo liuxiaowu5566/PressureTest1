@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Newtonsoft.Json;
 using PZhFrame.Core.Infrastructure.Lib;
 using PZhFrame.Core.Infrastructure.Net;
 using PZhFrame.Data.DapperHelper;
@@ -8,6 +9,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,10 +63,21 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual List<T> Select<T>(object idValue=null)
+        public virtual List<T> Select<T>(string sql)
         {
             // 去缓存服务（层）中取数据
-            return dbHelper.Select<T>(selectSql(idValue),idValue);
+            return dbHelper.Select<T>(sql);
+        }
+
+        /// <summary>
+        /// select 同步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual List<T> Select<T>(object idValue=null,string filename=null)
+        {
+            // 去缓存服务（层）中取数据
+            return dbHelper.Select<T>(selectSql(idValue, filename),idValue);
         }
 
         /// <summary>
@@ -78,6 +91,25 @@ namespace PZhFrame.ModelLayer.BaseModels
             return dbHelper.Select<T>(selectSql(index, pageSize, orderFiled));
         }
 
+        /// <summary>
+        /// select 同步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual List<T> SelectPart<T>(string tableName, int index, int pageSize, string orderFiled = " modifytime desc ")
+        {
+            Type typeInfo = typeof(T);
+            var pros = typeInfo.GetProperties().ToList();
+
+            string columns = " ";
+            foreach (PropertyInfo item in typeInfo.GetProperties())
+            {
+                columns = columns + item.Name + ", ";
+            }
+            columns = columns.Substring(0, columns.Length - 2);
+            // 去缓存服务（层）中取数据
+            return dbHelper.Select<T>(selectSql(columns, tableName, index, pageSize, orderFiled));
+        }
 
         /// <summary>
         /// select 同步 Expression 暂未实现
@@ -346,6 +378,141 @@ namespace PZhFrame.ModelLayer.BaseModels
             return res.ToList();
         }
 
+        /// <summary>
+        /// 90°+json格式分页查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="index"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public virtual List<T> SelectNineJson<T>(int index,int pageSize) where T : class, new()
+        {
+            List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();
+            List<t1_resource> infos = new t1_resource().Select<t1_resource>(index, pageSize, "createtime ");
+            ConcurrentBag<T> res = new ConcurrentBag<T>();
+            Type typeInfo = typeof(T);
+            var properties = typeInfo.GetProperties().ToList();
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+            Parallel.ForEach(infos, opt, info =>
+              {
+                  T model = new T();
+                  List<t3_json> filedValues = new t3_json(true).Select<t3_json>(info.id, "houseid").ToList();
+                  Parallel.ForEach(properties, opt, p =>
+                  {
+                      t1_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();                      
+                      var value = filedValues.Where(o => o.codeid == filed.id).FirstOrDefault().jsonstr;
+                      if (value.Substring(0,1)=="[")
+                      {
+                              List<T3_ModifyJsonModel> arrayjson = JsonConvert.DeserializeObject<List<T3_ModifyJsonModel>>(value);
+                              T3_ModifyJsonModel column = arrayjson.OrderByDescending(a => a.Column207).FirstOrDefault();
+                              Task.Run(() => { p.SetValue(model, column.Column205); }).ConfigureAwait(false);
+                      }
+                      if (value.Substring(0, 1) == "{")
+                      {
+                          var json = JsonConvert.DeserializeObject<T3_ModifyJsonModel>(value);
+                          Task.Run(() => { p.SetValue(model, json .Column205); }).ConfigureAwait(false);
+                      }
+                  });
+                  res.Add(model);
+              });
+            return res.ToList();
+        }
+
+        // <summary>
+        /// 90°+json格式单值查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="index"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public virtual List<T> NineJsonModel<T>(string id) where T : class, new()
+        {
+            List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();
+            ConcurrentBag<T> res = new ConcurrentBag<T>();
+            Type typeInfo = typeof(T);
+            var properties = typeInfo.GetProperties().ToList();
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+                T model = new T();
+                List<t3_json> filedValues = new t3_json(true).Select<t3_json>(id, "houseid").ToList();
+                Parallel.ForEach(properties, opt, p =>
+                {
+                    t1_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();
+                    var value = filedValues.Where(o => o.codeid == filed.id).FirstOrDefault().jsonstr;
+                    if (value.Substring(0, 1) == "[")
+                    {
+                        if (p.Name == "Column10")
+                        {
+                            List<T3_ModifyTelModel> stel = JsonConvert.DeserializeObject<List<T3_ModifyTelModel>>(value);
+                            T3_ModifyTelModel columntel = stel.OrderByDescending(a => a.Column204).FirstOrDefault();
+                            Task.Run(() => { p.SetValue(model, columntel); }).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            List<T3_ModifyJsonModel> ss = JsonConvert.DeserializeObject<List<T3_ModifyJsonModel>>(value);
+                        T3_ModifyJsonModel column = ss.OrderByDescending(a => a.Column207).FirstOrDefault();
+                        Task.Run(() => { p.SetValue(model, column.Column205); }).ConfigureAwait(false);
+                        }
+                    }
+                    if (value.Substring(0, 1) == "{")
+                    {
+                        var aa = JsonConvert.DeserializeObject<T3_ModifyJsonModel>(value);
+                        Task.Run(() => { p.SetValue(model, aa.Column205); }).ConfigureAwait(false);
+                    }
+                });
+                res.Add(model);
+            return res.ToList();
+        }
+
+
+
+
+
+
+        public virtual List<T> SelectExVertical<T>(int index, int pageSize) where T : class, new()
+        {
+            List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();
+            //Guid tableid = fileds.First().table_id;
+            List<t1_resource> infos = new t1_resource().Select<t1_resource>(index, pageSize,"createtime desc");
+            ConcurrentBag<T> res = new ConcurrentBag<T>();
+            Type typeInfo = typeof(T);
+            var properties = typeInfo.GetProperties().ToList();
+
+            //计算机 内核数量 最大并发数
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+
+
+            //List<FiledAuth> filedAuths = GetFiledAuth(tableName, "0c945d67-c95d-4ecc-8e7a-3e63e040ec7a");
+            Parallel.ForEach(infos, opt, info =>
+            {
+                T model = new T();
+                //List<new_filed_modify_log> filedValues = total.Where(o => o.resource_id == info.id).ToList();
+                List<t1_history> filedValues = new t1_history(true).Select<t1_history>(info.id,"houseid").ToList();
+                Parallel.ForEach(properties, opt, p =>
+                {
+                    t1_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();
+
+                    //if (filedAuths.Where(o => o.id == filed.id).FirstOrDefault().auth)
+                    //{
+                    var value = filedValues.Where(o => o.codeid == filed.id).FirstOrDefault().value;
+                    Task.Run(() => { p.SetValue(model,  value); }).ConfigureAwait(false);
+                    //}
+                });
+                res.Add(model);
+            });
+
+            return res.ToList();
+        }
+
+
 
         public virtual List<T> GetJson<T>(int index, int pageSize) where T:class,new()
         {
@@ -369,6 +536,41 @@ namespace PZhFrame.ModelLayer.BaseModels
         public List<T> StoredProcedure<T>(string storedProcedureName, DynamicParameters dynamicParameters)
         {
             return dbHelper.ExecuteStoredProcedureWithParms<T>(storedProcedureName, dynamicParameters);
+        }
+
+        
+
+        /// <summary>
+        /// 反射实现两个类的对象之间相同属性的值的复制
+        /// 适用于没有新建实体之间
+        /// </summary>
+        /// <typeparam name="D">返回的实体</typeparam>
+        /// <typeparam name="S">数据源实体</typeparam>
+        /// <param name="d">返回的实体</param>
+        /// <param name="s">数据源实体</param>
+        /// <returns></returns>
+        public static D Mapper<D, S>(D d, S s)
+        {
+            try
+            {
+                var Types = s.GetType();//获得类型  
+                var Typed = typeof(D);
+                foreach (PropertyInfo sp in Types.GetProperties())//获得类型的属性字段  
+                {
+                    foreach (PropertyInfo dp in Typed.GetProperties())
+                    {
+                        if (dp.Name == sp.Name && dp.PropertyType == sp.PropertyType && dp.Name != "Error" && dp.Name != "Item")//判断属性名是否相同  
+                        {
+                            dp.SetValue(d, sp.GetValue(s, null), null);//获得s对象属性的值复制给d对象的属性  
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return d;
         }
 
         #region private methods
@@ -409,17 +611,22 @@ namespace PZhFrame.ModelLayer.BaseModels
         {
             return $"select count(0) from {schema}.{tableName}";
         }
-        private string selectSql(object resourceIdValue = null)
+        private string selectSql(object resourceIdValue = null,string filename= "resource_id")
         {
             if(resourceIdValue == null)
                 return $"select * from {schema}.{tableName}";
             else
-                return $"select * from {schema}.{tableName} where resource_id=@id";
+                return $"select * from {schema}.{tableName} where {filename}=@id";
         }
 
         private string selectSql(int index, int pageSize, string orderFiled = "modifytime desc")
         {
             return $"select * from {schema}.{tableName} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
+        }
+
+        private string selectSql(string columns, string tableN, int index, int pageSize, string orderFiled = "modifytime desc")
+        {
+            return $"select {columns} from {schema}.{tableN} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
         }
 
         private List<FiledAuth> GetFiledAuth(string filedId, string accountId)
