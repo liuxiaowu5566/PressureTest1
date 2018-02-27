@@ -1,5 +1,6 @@
 ﻿using DemoService.Services.Implements.Vertical;
 using DemoService.Services.Interface.Vertical;
+using Models.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,32 +18,16 @@ namespace DemoTest.Vertical
         [Fact]
         public void QueryPageVerticalTime()
         {
+            List<ResponseModel<ColumnModel>> result = new List<ResponseModel<ColumnModel>>();
             List<double> listTime = new List<double>();
             Stopwatch sw = new Stopwatch();
             sw.Start();
             for (int i = 1; i < 500; i = i + 100)
             {
-                verticalService.GetHouse(i, 15);
+                result.Add(verticalService.GetHouse(i, 15));
             }
             sw.Stop();
             double totalMs = sw.Elapsed.TotalMilliseconds;
-        }
-
-        [Fact]
-        public void QueryPageVerticalTimeEx()
-        {
-            List<double> listTime = new List<double>();
-            
-            for (int i = 1; i < 500; i = i + 100)
-            {
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-                verticalService.GetHouse(i, 15);
-                sw.Stop();
-                TimeSpan ts2 = sw.Elapsed;
-                listTime.Add(ts2.TotalMilliseconds);
-            }
-            
         }
     }
 }
