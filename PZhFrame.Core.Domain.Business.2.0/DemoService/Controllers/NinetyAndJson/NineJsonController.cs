@@ -12,7 +12,7 @@ using System.Text;
 
 namespace DemoService.Controllers.Vertical
 {
-    [Route("Vertical/Test")]
+    [Route("NinetyAndJson/Test")]
     public class NineJsonController: Controller
     {
         public INineJsonService ninejsonService = null;
