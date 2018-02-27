@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ 作者:徐章壹,杨川
+ */
+using System;
 using System.Collections.Generic;
 using System.Text;
 using DemoService.Services.Interface.Json;
@@ -25,7 +28,7 @@ namespace DemoService.Controllers.Json
         }
 
         /// <summary>
-        /// 200字段查询
+        /// Json格式200字段查询
         /// </summary>
         /// <param name="index"></param>
         /// <param name="pagesize"></param>
@@ -37,7 +40,7 @@ namespace DemoService.Controllers.Json
         }
 
         /// <summary>
-        /// 前九字段查询
+        /// Json格式前九字段查询
         /// </summary>
         /// <param name="index"></param>
         /// <param name="pagesize"></param>
