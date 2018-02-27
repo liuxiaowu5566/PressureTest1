@@ -14,7 +14,7 @@ namespace DemoTest.NinetyAndJson
 {
     public class JsonDataTest
     {
-        IJsonDataService ninetyAndJsonService = new JsonDataService();
+        IJsonDataService jsonDataService = new JsonDataService();
         public JsonDataTest()
         {
 
@@ -29,7 +29,7 @@ namespace DemoTest.NinetyAndJson
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(await ninetyAndJsonService.GetJsonHousePart(i, 15));
+                result.Add(await jsonDataService.GetJsonHousePart(i, 15));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }
