@@ -19,7 +19,7 @@ namespace DemoTest.NinetyAndJson
         public void QueryPageTime()
         {
             List<int> listTime = new List<int>();
-            for (int i = 1; i < 500; i = i + 100)
+            for (int i = 10; i < 60; i = i + 10)
             {
                 int time = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
                 ninetyAndJsonService.QueryPage(i, 15);
