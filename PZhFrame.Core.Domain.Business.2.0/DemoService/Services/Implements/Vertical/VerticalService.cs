@@ -43,7 +43,7 @@ namespace DemoService.Services.Implements.Vertical
         {
             List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();
             //Guid tableid = fileds.First().table_id;
-            List<t1_resource> infos = new t1_resource().Select<t1_resource>(index, pageSize, "createtime desc");
+            List<t1_house> infos = new t1_house().Select<t1_house>(index, pageSize, "createtime desc");
             ConcurrentBag<T> res = new ConcurrentBag<T>();
             Type typeInfo = typeof(T);
             var properties = typeInfo.GetProperties().ToList();

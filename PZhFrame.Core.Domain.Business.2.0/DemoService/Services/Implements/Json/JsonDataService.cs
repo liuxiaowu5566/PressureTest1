@@ -63,7 +63,7 @@ namespace DemoService.Services.Implements.Json
                 });
             });
            
-            ResponseModel<t2_house_part_expand> resModel = new ResponseModel<t2_house_part_expand>(t2modelList.ToList());
+            ResponseModel<t2_house_part_expand> resModel = new ResponseModel<t2_house_part_expand>(t2modelList.ToList().OrderByDescending(o=>o.column1).ToList());
             return resModel;
         }
         /// <summary>
