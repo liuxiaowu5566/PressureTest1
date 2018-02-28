@@ -34,7 +34,7 @@ namespace DemoService.Services.Implements.Vertical
         /// <returns></returns>
         public ResponseModel<ColumnModel> GetHouse(int index, int pageSize)
         {
-            List<ColumnModel> hList = selectExVertical<ColumnModel>(index, pageSize);
+            List<ColumnModel> hList = selectExVertical<ColumnModel>(index, pageSize).OrderBy(o=>o.Column1).ToList();
             ResponseModel<ColumnModel> resModel = new ResponseModel<ColumnModel>(hList);
             return resModel;
         }
