@@ -10,6 +10,6 @@ namespace DemoService.Services.Interface.Ninety
 {
     public interface INinetyService
     {
-        Task<ResponseModel<t1_house_nunety>> QueryPage(int index, int pagesize);
+        Task<ResponseModel<t1_history_nunety>> QueryPage(int index, int pagesize);
     }
 }
