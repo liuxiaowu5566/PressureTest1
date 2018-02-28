@@ -3,9 +3,11 @@ using System.Linq;
 using System.Text;
 using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
+using PZhFrame.ModelLayer.BaseModels;
+
 namespace PZhFrame.ModelLayer.Models.Models
 {
-    public partial class t4_house
+    public partial class t4_house:BaseModel
     {
            public t4_house(){
 

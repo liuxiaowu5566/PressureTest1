@@ -9,6 +9,7 @@ using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DemoService.Services.Implements.ZeroX
@@ -30,15 +31,16 @@ namespace DemoService.Services.Implements.ZeroX
         /// <returns></returns>
         public async Task<ResponseModel<t6_house1_9>> QueryPage1_9(int index, int pagesize)
         {
-            string sql = $@"select distinct column2 from t6_house order by column2 offset {pagesize * (index - 1)} row fetch next {pagesize} rows only";
-            List<t6_house1_9> list = dataService.GetModelList<t6_house1_9>(sql);
+            string sql = $@"select distinct column2 from t6_house order by column2 desc offset {pagesize * (index - 1)} row fetch next {pagesize} rows only";
+            List <string> list = dataService.Get<string>(sql).ToList();
             List<t6_house1_9> modelList = new List<t6_house1_9>();
             foreach (var item in list)
             {
-                sql = $@"select top 1  house.*
-                         from (select column1,column2,column3,column4,column5,column6,column7,column8,column9 
-                         	  from t6_house where column2 ='{item.column2}') as house
-                         order by house.column9 desc";
+                sql = $@"select * 
+                         from (select column1,column2,column3,column4,column5,column6,column7,column8,column9
+                         	  from t6_house
+                         	  where column2 = {item}) as house
+                         order by house.column2 desc offset 0 row fetch next 1 rows only";
                 t6_house1_9 model = dataService.GetSingle<t6_house1_9>(sql);
                 modelList.Add(model);
             }
