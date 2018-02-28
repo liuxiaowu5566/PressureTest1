@@ -7,6 +7,7 @@ using Models.Model;
 using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
 using PZhFrame.ModelLayer.Models.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace DemoService.Services.Implements.Zero
         static ConnectionStringsHelper connection = new ConnectionStringsHelper();
         public ZeroService()
         {
+
             dataService = new DataService(connection.ConnString(), connection.SqlType());
         }
         /// <summary>
@@ -28,41 +30,50 @@ namespace DemoService.Services.Implements.Zero
         /// <param name="index"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async Task<ApiResponse> GetHouse(int index, int pageSize)
+        public async Task<ApiResponse> GetHouse(int pageIndex, int pageSize)
         {
             List<Result> list = new List<Result>();
             List<t5_history> listHistory = new List<t5_history>();
             List<t5_history> listResult = new List<t5_history>();
             ApiResponse resp = new ApiResponse(null).OK();
-            string sqlStr = $@"select * from t6_house order by column1 OFFSET {(pageSize) * ((index) - 1)} ROW FETCH NEXT {pageSize} rows only";
-            list.AddRange(await dataService.GetAsync<Result>(sqlStr));
-            foreach (var item in list)
+            try
             {
-                string sqlH = $@"select * from t5_history where houseid = {item.column2}";
-                listHistory.AddRange(await dataService.GetAsync<t5_history>(sqlH));
-                listResult.AddRange(listHistory.Where((x, i) => listHistory.FindLastIndex(z => z.codeid == x.codeid) == i));
-                foreach (var i in listResult)
+                string sqlStr = $@"select * from t4_house order by column1 OFFSET {(pageSize) * ((pageIndex) - 1)} ROW FETCH NEXT {pageSize} rows only";
+                list.AddRange(await dataService.GetAsync<Result>(sqlStr));
+                foreach (var item in list)
                 {
-                    switch (i.codeid)
+                    string sqlHistory = $@"select * from t5_history where houseid = {item.column1}";
+                    listHistory.AddRange(await dataService.GetAsync<t5_history>(sqlHistory));
+                    listResult.AddRange(listHistory.Where((x, i) => listHistory.FindLastIndex(z => z.codeid == x.codeid) == i));
+                    foreach (var i in listResult)
                     {
-                        case 1:
-                            item.column4 = i.value;
-                            break;
-                        case 2:
-                            item.column5 = i.value;
-                            break;
-                        case 3:
-                            item.column6 = i.value;
-                            break;
-                        case 4:
-                            item.column7 = i.value;
-                            break;
-                        case 5:
-                            item.column8 = i.value;
-                            break;
+                        switch (i.codeid)
+                        {
+                            case 1:
+                                item.column4 = i.value;
+                                break;
+                            case 2:
+                                item.column5 = i.value;
+                                break;
+                            case 3:
+                                item.column6 = i.value;
+                                break;
+                            case 4:
+                                item.column7 = i.value;
+                                break;
+                            case 5:
+                                item.column8 = i.value;
+                                break;
+                        }
                     }
                 }
-            }           
+            }
+            catch(Exception ex)
+            {
+                resp.Message = ex.Message;
+                resp = resp.SqlOperationExceptionResponse();
+            }
+            
             resp.Model = list;
             return resp;
         }
