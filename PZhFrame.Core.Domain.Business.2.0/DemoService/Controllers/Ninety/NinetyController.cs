@@ -26,7 +26,7 @@ namespace DemoService.Controllers.Ninety
         /// <param name="pagesize"></param>
         /// <returns></returns>
         [HttpGet, Route("QueryPage/{index}/{pagesize}")]
-        public async Task<ResponseModel<t1_house_nunety>> QueryPage(int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t1_history_nunety>> QueryPage(int index = 1, int pagesize = 15)
         {
             return await zeroService.QueryPage(index, pagesize);
         }

@@ -22,12 +22,12 @@ namespace DemoTest.Ninety
         public async void QueryPageTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
-            List<ResponseModel<t1_house_nunety>> result = new List<ResponseModel<t1_house_nunety>>();
-            for (int i = 1; i < 500; i = i + 100)
+            List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
+            for (int i = 100; i < 400; i = i + 100)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(await ninetyService.QueryPage(i, 15));
+                result.Add(await ninetyService.QueryPage(i, 150));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }

@@ -21,7 +21,7 @@ namespace DemoService.Services.Implements.Ninety
             dataService = new DataService(connection.ConnString(), connection.SqlType());
         }
 
-        public async Task<ResponseModel<t1_house_nunety>> QueryPage(int index, int pagesize)
+        public async Task<ResponseModel<t1_history_nunety>> QueryPage(int index, int pagesize)
         {
             string sqlName = $@"declare @sql varchar(max)
                                 select @sql = ISNULL(@sql+',','')+name
@@ -44,9 +44,9 @@ namespace DemoService.Services.Implements.Ninety
                             where history.rowNum <= 1 
                             ) as code
                             pivot (max(code.value) for name in ({name})) t";
-            List<t1_house_nunety> listModel = dataService.GetModelList<t1_house_nunety>(sql);
+            List<t1_history_nunety> listModel = dataService.GetModelList<t1_history_nunety>(sql);
 
-            return new ResponseModel<t1_house_nunety>(listModel);
+            return new ResponseModel<t1_history_nunety>(listModel);
         }
     }
 }
