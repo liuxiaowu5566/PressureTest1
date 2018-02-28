@@ -4,6 +4,7 @@
 using DemoService.Services.Interface.Json;
 using Models.Model;
 using Models.Model.t2;
+using Models.Model.t4;
 using Newtonsoft.Json;
 using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
@@ -57,7 +58,8 @@ namespace DemoService.Services.Implements.Json
                     modeltemp.column5 = column5.Column205;
                     modeltemp.column6 = column6.Column205;
                     modeltemp.column7 = column7.Column205;
-                    modeltemp.column8 = column8.Column205; t2modelList.Add(modeltemp);
+                    modeltemp.column8 = column8.Column205;
+                    t2modelList.Add(modeltemp);
                 });
             });
            
