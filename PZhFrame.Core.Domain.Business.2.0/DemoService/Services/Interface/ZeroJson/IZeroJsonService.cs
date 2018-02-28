@@ -14,7 +14,7 @@ namespace DemoService.Services.Interface.ZeroJson
 {
     public interface IZeroJsonService
     {
-        ResponseModel<T4_House_Part> QueryPage(int index, int pagesize);
-        T4_House_Show QueryInformation(string houseId);
+        Task<ResponseModel<T4_House_Part>> QueryPage(int index, int pagesize);
+        Task<T4_House_Show> QueryInformation(string houseId);
     }
 }
