@@ -5,9 +5,9 @@ using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
 namespace PZhFrame.ModelLayer.Models.Models
 {
-    public partial class t1_house_nunety
+    public partial class t1_history_nunety
     {
-           public t1_house_nunety(){
+           public t1_history_nunety(){
 
 
            }
