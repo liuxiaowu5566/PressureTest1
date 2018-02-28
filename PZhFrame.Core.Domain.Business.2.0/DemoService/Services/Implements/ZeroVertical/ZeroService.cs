@@ -98,30 +98,3 @@ namespace DemoService.Services.Implements.Zero
         }
     }
 }
-//Parallel.ForEach(list,item =>
-//{
-//    string sqlH = $@"select * from t5_history where houseid = {item.column2}";
-//    listHistory.AddRange(dataService.GetModelList<t5_history>(sqlH));
-//    listResult.AddRange(listHistory.Where((x, i) => listHistory.FindLastIndex(z => z.codeid == x.codeid) == i));
-//    Parallel.ForEach(listResult, i =>
-//    {
-//        switch (i.codeid)
-//        {
-//            case 1:
-//                item.column4 = i.value;
-//                break;
-//            case 2:
-//                item.column5 = i.value;
-//                break;
-//            case 3:
-//                item.column6 = i.value;
-//                break;
-//            case 4:
-//                item.column7 = i.value;
-//                break;
-//            case 5:
-//                item.column8 = i.value;
-//                break;
-//        }
-//    });
-//});
