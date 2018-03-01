@@ -58,14 +58,11 @@ namespace DemoService.Services.Implements.Vertical
             ConcurrentBag<T> res = new ConcurrentBag<T>();
             Type typeInfo = typeof(T);
             var properties = typeInfo.GetProperties().ToList();
-
             //计算机 内核数量 最大并发数
             ParallelOptions opt = new ParallelOptions
             {
                 MaxDegreeOfParallelism = 2
             };
-
-
             //List<FiledAuth> filedAuths = GetFiledAuth(tableName, "0c945d67-c95d-4ecc-8e7a-3e63e040ec7a");
             Parallel.ForEach(infos, opt, info =>
             {

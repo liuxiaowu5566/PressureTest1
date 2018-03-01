@@ -1,4 +1,5 @@
-﻿using Models.Model;
+﻿using DemoTest.DataAdd;
+using Models.Model;
 using PZhFrame.ModelLayer.Models.Models;
 using System;
 using System.Collections.Generic;
@@ -11,57 +12,45 @@ namespace DemoTest
 {
     public class Add090Test
     {
+        private static readonly object locker = new object();
         [Fact]
         public void AddHistoryData()
         {
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<t8_history> lst = new List<t8_history>();
             Stopwatch st = new Stopwatch();
             st.Start();
-            int id = 0;
-            Parallel.For(1, 40, i => {
-                Parallel.For(1, 5, j => {
-                    Parallel.For(1, 5, k => {
-                        id++;
-                        Parallel.Invoke(()=> {
-                            t5_history model = new t5_history()
+            int code = 0;
+            Parallel.For(1, 10001, i =>
+                {
+                    Parallel.For(1, 6, j =>
+                    {
+                        Parallel.For(1, 6, k =>
+                        {
+                            Parallel.Invoke(() =>
                             {
-                                id = id,
-                                houseid = i,
-                                codeid = j,
-                                value = "column" + i.ToString() + "-" + j.ToString() + "-" + k.ToString(),
-                                createtime = DateTime.Now,
-                                opreatorid = Guid.NewGuid()
-                            };
-                            model.Insert();
-
+                                int id;
+                                lock (locker)
+                                {
+                                    id = ++code;
+                                };
+                                t8_history model = new t8_history(true)
+                                {
+                                    id = id,
+                                    houseid = i,
+                                    codeid = j,
+                                    value = "column" + i.ToString() + "-" + j.ToString() + "-" + k.ToString(),
+                                    createtime = DateTime.Now,
+                                    opreatorid = Guid.NewGuid()
+                                };
+                                lst.Add(model);
+                                model.Insert();
+                            });
                         });
-                        
                     });
                 });
-            });
             st.Stop();
-
-
-            //for (int i = 1; i <= 400000; i++)
-            //{
-            //    for (int j = 1; j <= 5; j++)
-            //    {
-            //        for (int k = 1; k <= 5; k++)
-            //        {
-            //            id++;
-            //            t5_history model = new t5_history()
-            //            {
-            //                id = id,
-            //                houseid = i,
-            //                codeid = j,
-            //                value = "column" + i.ToString() + "-" + j.ToString() + "-" + k.ToString(),
-            //                createtime = DateTime.Now,
-            //                opreatorid = Guid.NewGuid()
-            //            };
-            //            model.Insert();
-            //        }
-                    
-            //    }
-            //}
+            listTime.Add(st.Elapsed);
         }
     }
 }
