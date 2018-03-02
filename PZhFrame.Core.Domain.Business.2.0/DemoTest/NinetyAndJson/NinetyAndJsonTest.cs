@@ -23,7 +23,7 @@ namespace DemoTest.NinetyAndJson
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t3_house_nunety>> result = new List<ResponseModel<t3_house_nunety>>();
-            for (int i = 100; i < 400; i = i + 100)
+            for (int i = 1; i < 10; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
