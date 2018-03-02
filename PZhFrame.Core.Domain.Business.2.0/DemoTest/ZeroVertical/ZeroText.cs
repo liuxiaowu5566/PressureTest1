@@ -23,8 +23,8 @@ namespace DemoTest.Zero
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ApiResponse> result = new List<ApiResponse>();
-            for (int i = 1; i < 500; i = i + 100)
-            { 
+            for (int i = 1; i < 10; i = i+1)
+            {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 result.Add(await zeroService.GetHouse(i, 15));
