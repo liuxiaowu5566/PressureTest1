@@ -30,5 +30,11 @@ namespace DemoService.Controllers.Ninety
         {
             return await zeroService.QueryPage(index, pagesize);
         }
+
+        [HttpGet,Route("QueryPageMethod/{index}/{pagesize}")]
+        public async Task<ResponseModel<t1_history_nunety>> QueryPageMethod(int index, int pagesize)
+        {
+            return await zeroService.QueryPageMethod(index,pagesize);
+        }
     }
 }

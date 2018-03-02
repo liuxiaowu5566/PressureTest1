@@ -32,5 +32,20 @@ namespace DemoTest.Ninety
                 listTime.Add(sw.Elapsed);
             }
         }
+
+        [Fact]
+        public async void QueryPageMethodTime()
+        {
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
+            for (int i = 1; i < 5; i = i + 1)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                result.Add(await ninetyService.QueryPageMethod(i, 15));
+                sw.Stop();
+                listTime.Add(sw.Elapsed);
+            }
+        }
     }
 }

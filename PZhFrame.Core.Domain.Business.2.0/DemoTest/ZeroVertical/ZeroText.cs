@@ -2,6 +2,7 @@
 using DemoService.Services.Interface.Zero;
 using Models.Model;
 using PZhFrame.Data.DataService;
+using PZhFrame.ModelLayer.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,11 +28,11 @@ namespace DemoTest.Zero
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(await zeroService.GetHouse(i, 15));
+                result.Add(zeroService.GetHouse(i, 15));
                 sw.Stop();
-                listTime.Add(sw.Elapsed);
+                listTime.Add(sw.Elapsed.TotalMilliseconds);
             }
+            listResult.AddRange(listTime);
         }
-
     }
 }

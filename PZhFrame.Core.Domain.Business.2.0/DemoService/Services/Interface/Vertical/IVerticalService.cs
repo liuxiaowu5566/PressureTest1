@@ -12,5 +12,6 @@ namespace DemoService.Services.Interface.Vertical
     {
         void AddFiledCode();
         ResponseModel<ColumnModel> GetHouse(int index, int pageSize);
+        ResponseModel<ColumnModel> GetHouseSP(int pageIndex, int pageSize);
     }
 }

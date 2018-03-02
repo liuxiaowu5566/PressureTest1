@@ -32,7 +32,7 @@ namespace DemoService.Services.Implements.NinetyAndJson
             string sql = $@"select *
                             from (select code.name,
                             	   		 houseid,
-                            	   		 dbo.json_value_max(jsonstr,'Column205','Column206') as value
+                            			 dbo.json_value_max(jsonstr,'Column205','Column206') as value
                             	   		 from t3_json as json
                             			 left join t1_code as code
                             			 on json.codeid = code.id
