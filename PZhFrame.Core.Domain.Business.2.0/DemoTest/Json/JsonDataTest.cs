@@ -23,15 +23,15 @@ namespace DemoTest.NinetyAndJson
         [Fact]
         public async void QueryPageTime()
         {
-            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<double> listTime = new List<double>();
             List<ResponseModel<t2_house_part_expand>> result = new List<ResponseModel<t2_house_part_expand>>();
-            for (int i = 10; i < 60; i = i + 10)
+            for (int i = 1; i < 5; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 result.Add(await jsonDataService.GetJsonHousePart(i, 15));
                 sw.Stop();
-                listTime.Add(sw.Elapsed);
+                listTime.Add(sw.Elapsed.TotalMilliseconds);
             }
         }
     }

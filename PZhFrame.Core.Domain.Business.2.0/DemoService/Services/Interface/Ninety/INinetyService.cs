@@ -11,5 +11,7 @@ namespace DemoService.Services.Interface.Ninety
     public interface INinetyService
     {
         Task<ResponseModel<t1_history_nunety>> QueryPage(int index, int pagesize);
+
+        Task<ResponseModel<t1_history_nunety>> QueryPageMethod(int index, int pagesize);
     }
 }
