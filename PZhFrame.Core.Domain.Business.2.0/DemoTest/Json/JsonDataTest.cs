@@ -23,9 +23,9 @@ namespace DemoTest.NinetyAndJson
         [Fact]
         public async void QueryPageTime()
         {
-            List<double> listTime = new List<double>();
+            List<Double> listTime = new List<Double>();
             List<ResponseModel<t2_house_part_expand>> result = new List<ResponseModel<t2_house_part_expand>>();
-            for (int i = 1; i < 5; i = i + 1)
+           for (int i = 1; i < 101; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();

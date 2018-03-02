@@ -23,15 +23,15 @@ namespace DemoTest.NinetyAndJson
         [Fact]
         public void QueryPageTime()
         {
-            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<Double> listTime = new List<Double>();
             List<ResponseModel<T3_Part>> result = new List<ResponseModel<T3_Part>>();            
-            for (int i = 10; i < 60; i = i + 10)
+            for (int i = 100; i < 600; i = i + 100)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(nineJsonService.GetHousePart(i, 15));                
+                result.Add(nineJsonService.GetHousePart(i, 150));                
                 sw.Stop();
-                listTime.Add(sw.Elapsed);
+                listTime.Add(sw.Elapsed.TotalMilliseconds);
             }
         }
     }

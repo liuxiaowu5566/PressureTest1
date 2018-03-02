@@ -36,5 +36,10 @@ namespace DemoService.Controllers.Vertical
         {
             return verticalService.GetHouse(index, pagesize);
         }
+        [HttpGet, Route("HouseSP/{index}/{pagesize}")]
+        public ResponseModel<ColumnModel> HouseSP(int index = 1, int pagesize = 15)
+        {
+            return verticalService.GetHouseSP(index, pagesize);
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace DemoTest.Vertical
         {
             List<ResponseModel<ColumnModel>> result = new List<ResponseModel<ColumnModel>>();
             List<double> listTime = new List<double>();
-            List<int> list = new List<int> { 1, 2, 100, 200, 300 };
+            List<int> list = new List<int> { 1, 2, 3, 4, 100, 200, 300 };
             foreach (var i in list)
             {
                 Stopwatch sw = new Stopwatch();
