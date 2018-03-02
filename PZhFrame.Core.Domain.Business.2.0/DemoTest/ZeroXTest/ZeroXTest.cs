@@ -31,7 +31,7 @@ namespace DemoTest.ZeroXTest
                 listTime.Add(sw.Elapsed.TotalMilliseconds);
             }
         }
-
+        /*
         [Fact]
         public async void QueryPage1_9Time()
         {
@@ -46,5 +46,6 @@ namespace DemoTest.ZeroXTest
                 listTime.Add(sw.Elapsed);
             }
         }
+        */
     }
 }

@@ -23,11 +23,11 @@ namespace DemoTest.Ninety
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
-            for (int i = 100; i < 400; i = i + 100)
+            for (int i = 1; i < 50; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(await ninetyService.QueryPage(i, 150));
+                result.Add(await ninetyService.QueryPage(i, 15));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }
@@ -46,6 +46,16 @@ namespace DemoTest.Ninety
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }
+        }
+
+        [Fact]
+        public async void QueryPageMethodParallelTime()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            ResponseModel<t1_history_nunety> result = await ninetyService.QueryPageMethodParallel(2, 15);
+            sw.Stop();
+            double time = sw.Elapsed.TotalMilliseconds;
         }
     }
 }
