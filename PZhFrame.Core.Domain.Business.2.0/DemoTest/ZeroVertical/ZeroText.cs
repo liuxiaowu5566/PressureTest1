@@ -22,19 +22,9 @@ namespace DemoTest.Zero
         [Fact]
         public async void QueryPageTime()
         {
-            List<double> listResult = new List<double>();
-            List<double> listTime = new List<double>();
-            //List<ResponseModel<t4_house>> result = new List<ResponseModel<t4_house>>();
-            //for (int i = 1; i < 11; i = i + 10)
-            //{
-            //    Stopwatch sw = new Stopwatch();
-            //    sw.Start();
-            //    result.Add(await zeroService.GetHouse(i, 15));
-            //    sw.Stop();
-            //    listTime.Add(sw.Elapsed);
-            //}
-            List<ResponseModel<Result>> result = new List<ResponseModel<Result>>();
-            for (int i = 1; i < 101; i++)
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ApiResponse> result = new List<ApiResponse>();
+            for (int i = 1; i < 10; i = i+1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();

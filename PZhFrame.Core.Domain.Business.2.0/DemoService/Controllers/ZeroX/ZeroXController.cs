@@ -27,11 +27,14 @@ namespace DemoService.Controllers.ZeroX
         /// <param name="index"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
+        /*
         [HttpGet, Route("QueryPage1_9/{index}/{pagesize}")]
         public async Task<ResponseModel<t6_house1_9>> QueryPage1_9(int index = 1, int pagesize = 15)
         {
             return await zeroXService.QueryPage1_9(index, pagesize);
         }
+        */
+
         [HttpGet, Route("QP1_9/{index}/{pagesize}")]
         public async Task<ResponseModel<t6_house1_9>> QP1_9(int index = 1, int pagesize = 15)
         {
