@@ -1,6 +1,7 @@
 ﻿/*
  作者:孙靖武
  */
+using Dapper;
 using DemoService.Services.Interface.Vertical;
 using Models.Model;
 using Models.Model.t1;
@@ -34,11 +35,21 @@ namespace DemoService.Services.Implements.Vertical
         /// <returns></returns>
         public ResponseModel<ColumnModel> GetHouse(int index, int pageSize)
         {
-            List<ColumnModel> hList = selectExVertical<ColumnModel>(index, pageSize).OrderBy(o=>o.Column1).ToList();
+            List<ColumnModel> hList = selectExVertical<ColumnModel>(index, pageSize).OrderByDescending(o=>o.Column1).ToList();
             ResponseModel<ColumnModel> resModel = new ResponseModel<ColumnModel>(hList);
             return resModel;
         }
-
+        public ResponseModel<ColumnModel> GetHouseSP(int pageIndex, int pageSize)
+        {
+            string storedProcedureName = "ROW2COL";
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@resourceTableName", "t1_house", System.Data.DbType.String);
+            parameters.Add("@pageIndex", pageIndex, System.Data.DbType.Int32);
+            parameters.Add("@pageSize", pageSize, System.Data.DbType.Int32);
+            List<ColumnModel> hList = new t1_house().StoredProcedure< ColumnModel>(storedProcedureName, parameters);
+            ResponseModel<ColumnModel> resModel = new ResponseModel<ColumnModel>(hList);
+            return resModel;
+        }
         private List<T> selectExVertical<T>(int index, int pageSize) where T : class, new()
         {
             List<t1_code> fileds = new t1_code().Select<t1_code>().ToList();

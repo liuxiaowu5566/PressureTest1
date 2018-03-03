@@ -20,7 +20,7 @@ namespace DemoTest
             {
                 for (int j = 1; j <= 200; j++)
                 {
-                    if (j == 4 || j == 5 || j == 6 || j == 7 || j == 8)
+                    if (j <=50 && j!=10)
                     {
                         List<T2_ModifyLogModel> lst = new List<T2_ModifyLogModel>();
                         for (int k = 1; k <= 5; k++)
