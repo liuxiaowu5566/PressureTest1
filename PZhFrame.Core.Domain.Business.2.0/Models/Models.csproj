@@ -6,6 +6,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="PZhFrame.Data.DataService" Version="1.0.1" />
     <PackageReference Include="PZhFrame.Data.Repository" Version="1.0.0" />
   </ItemGroup>
@@ -18,6 +19,9 @@
     <None Update="Model\ModelTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Model\Mongo\ModelTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
 

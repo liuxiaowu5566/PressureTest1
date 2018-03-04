@@ -1,8 +1,6 @@
 ﻿using DemoService.Services.Implements.Zero;
 using DemoService.Services.Interface.Zero;
 using Models.Model;
-using PZhFrame.Data.DataService;
-using PZhFrame.ModelLayer.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,17 +18,18 @@ namespace DemoTest.Zero
         }
 
         [Fact]
-        public async void QueryPageTime()
+        public void QueryPageTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
-            List<ApiResponse> result = new List<ApiResponse>();
-            for (int i = 1; i < 10; i = i+1)
+            List<TimeSpan> listResult = new List<TimeSpan>();
+            List<ResponseModel<Result>> result = new List<ResponseModel<Result>>();
+            for (int i = 100; i <301; i = i+100)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(zeroService.GetHouse(i, 15));
+                result.Add( zeroService.GetHouse(i, 150));
                 sw.Stop();
-                listTime.Add(sw.Elapsed.TotalMilliseconds);
+                listTime.Add(sw.Elapsed);
             }
             listResult.AddRange(listTime);
         }
