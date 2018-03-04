@@ -114,12 +114,20 @@ namespace MongoDBHelper
         /// <typeparam name="T"></typeparam>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public List<T> Select<T>(Expression<Func<T, bool>> filter, int pageIndex=1, int pageSize=15)
+        public List<T> Select<T>(Expression<Func<T, bool>> filter, int pageIndex=1, int pageSize=15, string oderbyFiled="_id")
         {
             IMongoCollection<T> mongoCollection = getCollection<T>();
-            return mongoCollection.Find(filter).Skip((pageIndex-1)*pageSize).Limit(pageSize).ToList();
+            //return mongoCollection.Find(filter).Skip((pageIndex-1)*pageSize).Limit(pageSize).ToList();
+            return mongoCollection.Find(filter).Sort(Builders<T>.Sort.Descending(oderbyFiled)).Skip((pageIndex - 1) * pageSize).Limit(pageSize).ToList();
         }
 
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public long Update<T>(Expression<Func<T, bool>> filter,T model)
         {
             IMongoCollection<T> mongoCollection = getCollection<T>();

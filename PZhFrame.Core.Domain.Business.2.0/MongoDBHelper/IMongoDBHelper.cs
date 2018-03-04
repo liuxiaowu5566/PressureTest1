@@ -42,7 +42,7 @@ namespace MongoDBHelper
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        List<T> Select<T>(Expression<Func<T, bool>> filter, int pageIndex=1, int pageSize=15);
+        List<T> Select<T>(Expression<Func<T, bool>> filter, int pageIndex=1, int pageSize= 15, string oderbyFiled = "_id");
 
         /// <summary>
         /// 

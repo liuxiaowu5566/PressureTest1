@@ -1,4 +1,5 @@
 ﻿using DemoService.Services.Interface.Mongo;
+using Models.Model;
 using Models.Model.Mongo;
 using MongoDBHelper;
 using System;
@@ -75,18 +76,18 @@ namespace DemoService.Services.Implements.Mongo
             return reslut;
         }
 
-        public string AddBigHouse(string filePath)
+        public string AddBigHouse(int id, string filePath)
         {
             string reslut = null;
             try
             {
-                filePath = "D:\\" + filePath;
+                filePath = "C:\\Users\\admin\\Desktop\\测试文件\\" + filePath;
                 List<byte> fileData = File.ReadAllBytes(filePath).ToList();
-                bighouseinfo house = new bighouseinfo { _id = 1, remark = fileData };
+                bighouseinfo house = new bighouseinfo { _id = id, remark = fileData };
                 int res = mongoDBHelper.Insert(house);
                 if (res == 1)
                 {
-                    mongoDBHelper.Delete<bighouseinfo>(o => o._id == 1);
+                    //mongoDBHelper.Delete<bighouseinfo>(o => o._id == 1);
                     reslut = "成功";
                 }
                 else
@@ -100,6 +101,13 @@ namespace DemoService.Services.Implements.Mongo
                 reslut = e.Message;
             }
             return reslut;
+        }
+
+        public ResponseModel<houseinfo> GetHouse(int pageIndex = 1, int pagesize = 15, string oderbyFiled = "_id")
+        {
+            List<houseinfo> list = mongoDBHelper.Select<houseinfo>(o => o._id > 1000, pageIndex, pagesize);
+            ResponseModel<houseinfo> resModel = new ResponseModel<houseinfo>(list);
+            return resModel;
         }
     }
 

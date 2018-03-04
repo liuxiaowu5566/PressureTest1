@@ -1,5 +1,6 @@
 ﻿using DemoService.Services.Interface.Mongo;
 using Microsoft.AspNetCore.Mvc;
+using Models.Model;
 using Models.Model.Mongo;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,15 @@ namespace DemoService.Controllers.Mongo
             return mongoService.AddBigHouse(size);
         }
 
-        [HttpGet, Route("AddBigHouseByPath/{path}")]
-        public string AddBigHouseByPath(string path)
+        [HttpGet, Route("AddBigHouseByPath/{id}/{path}")]
+        public string AddBigHouseByPath(int id, string path)
         {
-            return mongoService.AddBigHouse(path);
+            return mongoService.AddBigHouse(id,path);
+        }
+        [HttpGet, Route("house/{pageIndex}/{pagesize}")]
+        public ResponseModel<houseinfo> House(int pageIndex = 1, int pagesize = 15)
+        {
+            return mongoService.GetHouse(pageIndex, pagesize);
         }
     }
 }
