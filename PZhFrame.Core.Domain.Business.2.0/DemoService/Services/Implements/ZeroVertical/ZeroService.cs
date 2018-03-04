@@ -9,7 +9,6 @@ using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
 using PZhFrame.ModelLayer.Models.Models;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -35,7 +34,7 @@ namespace DemoService.Services.Implements.Zero
         /// <returns></returns>
         public ResponseModel<Result> GetHouse(int pageIndex, int pageSize)
         {
-            List<t4_code> fileds = new t4_code().Select<t4_code>().ToList();
+            List<t4_code> fileds =new t4_code().Select<t4_code>().ToList();
             Type typeInfo = typeof(Result);
             var properties = typeInfo.GetProperties().ToList();
             List<Result> List = new Result().SelectPart<Result>(typeof(t4_house).Name, pageIndex, pageSize, "column1");
@@ -45,17 +44,19 @@ namespace DemoService.Services.Implements.Zero
                     listHistory = (listHistory.Where((x, i) => listHistory.FindLastIndex(z => z.codeid == x.codeid) == i)).ToList();
                     Parallel.ForEach(listHistory, i =>
                         {
-                            t4_code columnName = fileds.Where(o => o.id == i.codeid).FirstOrDefault();
-                            PropertyInfo proInfo = properties.Where(o => o.Name == columnName.name).FirstOrDefault();
-                            if (proInfo != null)
-                            {
-                                proInfo.SetValue(item, i.value);
-                            }
-                        });
+                        t4_code columnName = fileds.Where(o => o.id == i.codeid).FirstOrDefault();
+                        PropertyInfo proInfo = properties.Where(o => o.Name == columnName.name).FirstOrDefault();
+                        if (proInfo != null)
+                        {
+                            proInfo.SetValue(item, i.value);
+                        }
+                    });
                 });
             ResponseModel<Result> resModel = new ResponseModel<Result>(List);
             return resModel;
         }
+
+       
 
         /// <summary>
         /// 详细信息的查询
@@ -74,8 +75,8 @@ namespace DemoService.Services.Implements.Zero
             list.AddRange(await dataService.GetAsync<t4_house>(sqlStr));
             foreach (var item in list)
             {
-                string sqlH = $@"select * from t5_history where houseid = {item.column1}";
-                listHistory = (await dataService.GetAsync<t5_history>(sqlH)).ToList();
+                string sqlHistory = $@"select * from t5_history where houseid = {item.column1}";
+                listHistory = (await dataService.GetAsync<t5_history>(sqlHistory)).ToList();
                 listHistory = (listHistory.Where((x, i) => listHistory.FindLastIndex(z => z.codeid == x.codeid) == i)).ToList();
                 Parallel.ForEach(listHistory, i =>
                 {
