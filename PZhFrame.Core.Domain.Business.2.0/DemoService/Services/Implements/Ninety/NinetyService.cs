@@ -1,5 +1,5 @@
 ﻿/*
- 作者：徐剑
+ 作者：徐剑 
  */
 
 using DemoService.Services.Interface.Ninety;
@@ -25,6 +25,13 @@ namespace DemoService.Services.Implements.Ninety
             dataService = new DataService(connection.ConnString(), connection.SqlType());
         }
 
+
+        /// <summary>
+        /// 用sql语句进行分页，取最大，表旋转
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
         public async Task<ResponseModel<t1_history_nunety>> QueryPage(int index, int pagesize)
         {
             string sqlName = $@"declare @sql varchar(max)
@@ -56,6 +63,12 @@ namespace DemoService.Services.Implements.Ninety
             return new ResponseModel<t1_history_nunety>(listModel);
         }
 
+        /// <summary>
+        /// 在程序中进行分页，取最大，表旋转
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
         public async Task<ResponseModel<t1_history_nunety>> QueryPageMethod(int index, int pagesize)
         {
             string sql = $@"select code.name,history.*
@@ -86,7 +99,7 @@ namespace DemoService.Services.Implements.Ninety
                 foreach (var name in nameList)  //根据code分组然后遍历
                 {
                     var value = name.Where(o => o.createtime == name.Max(j => j.createtime)).
-                        Select(o => o.value).FirstOrDefault();//每组code取修改时间最大的一个
+                        Select(o => o.value).FirstOrDefault();//每组name取修改时间最大的一个
                     PropertyInfo Info = type.GetProperty(name.Key.ToLower());
                     if (Info != null)
                     {
@@ -95,6 +108,71 @@ namespace DemoService.Services.Implements.Ninety
                 }
                 listModel.Add(model);
             }
+            return new ResponseModel<t1_history_nunety>(listModel);
+        }
+
+        /// <summary>
+        /// 在程序中进行分页，取最大，表旋转（并发）
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        public async Task<ResponseModel<t1_history_nunety>> QueryPageMethodParallel(int index, int pagesize)
+        {
+            string sql = $@"select code.name,history.*
+                            from (select hry.codeid,hry.houseid,hry.value,hry.createtime
+                            	  from t1_history as hry
+                            	  join (select top 15 id as houseid
+                            				  from t1_house 
+                            				  where id >=(select min(id) 
+                            				  		      from (select  id 
+                            				  			  	    from t1_house 
+                            				  			  	    order by id desc offset {pagesize * (index - 1)} row fetch next {pagesize} rows only
+                            				  			  	    ) as T
+                            				  			 )
+                            		   ) as  hid
+                            	  on hry.houseid = hid.houseid
+                            ) as history
+                            left join t1_code as code
+                            on history.codeid = code.id";
+            List<t1_history_nunety> listModel = new List<t1_history_nunety>();
+            List<nunety> nunetyModel = dataService.GetModelList<nunety>(sql);
+            var houseList = nunetyModel.GroupBy(o => o.houseid);
+            ParallelOptions opt = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 2
+            };
+            Parallel.ForEach(houseList, opt, house =>
+            {
+                t1_history_nunety model = new t1_history_nunety();
+                model.houseid = house.Key;
+                Type type = model.GetType();
+                var nameList = house.GroupBy(o => o.name);
+                foreach (var name in nameList)  //根据code分组然后遍历
+                {
+                    var value = name.Where(o => o.createtime == name.Max(j => j.createtime)).
+                        Select(o => o.value).FirstOrDefault();//每组name取修改时间最大的一个
+                    PropertyInfo Info = type.GetProperty(name.Key.ToLower());
+                    if (Info != null)
+                    {
+                        Info.SetValue(model, value.ToString(), null);
+                    }
+                }
+                listModel.Add(model);
+                /*
+                Parallel.ForEach(nameList, opt, name =>
+                {
+                    var value = name.Where(o => o.createtime == name.Max(j => j.createtime)).
+                        Select(o => o.value).FirstOrDefault();//每组name取修改时间最大的一个
+                    PropertyInfo Info = type.GetProperty(name.Key.ToLower());
+                    if (Info != null)
+                    {
+                        Info.SetValue(model, value.ToString(), null);
+                    }
+                });
+                listModel.Add(model);
+                */
+            });
             return new ResponseModel<t1_history_nunety>(listModel);
         }
 

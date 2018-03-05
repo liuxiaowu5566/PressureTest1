@@ -17,7 +17,9 @@ namespace DemoService.Services.Interface.ZeroX
         /// <param name="index"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
+        /*
         Task<ResponseModel<t6_house1_9>> QueryPage1_9(int index, int pagesize);
+        */
         Task<ResponseModel<t6_house1_9>> QP1_9(int index, int pagesize);
 
         /// <summary>
