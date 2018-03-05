@@ -25,11 +25,11 @@ namespace DemoTest.NinetyAndJson
         {
             List<Double> listTime = new List<Double>();
             List<ResponseModel<T3_Part>> result = new List<ResponseModel<T3_Part>>();            
-            for (int i = 100; i < 600; i = i + 100)
+            for (int i = 1; i < 101; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(nineJsonService.GetHousePart(i, 150));                
+                result.Add(nineJsonService.GetHousePart(i, 15));                
                 sw.Stop();
                 listTime.Add(sw.Elapsed.TotalMilliseconds);
             }

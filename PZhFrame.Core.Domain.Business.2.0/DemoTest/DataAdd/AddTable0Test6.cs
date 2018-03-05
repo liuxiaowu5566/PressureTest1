@@ -1,5 +1,4 @@
-﻿using Models.Model;
-using Models.Model.t6;
+﻿using Models.Model.t6;
 using System.Linq;
 using Xunit;
 

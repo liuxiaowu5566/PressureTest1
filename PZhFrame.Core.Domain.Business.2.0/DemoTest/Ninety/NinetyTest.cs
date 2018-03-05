@@ -5,17 +5,16 @@ using PZhFrame.ModelLayer.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Xunit;
 
 namespace DemoTest.Ninety
 {
     public class NinetyTest
     {
-        INinetyService ninetyService = new NinetyService();
+        INinetyService ninetyService = null;
         public NinetyTest()
         {
-
+            ninetyService= new NinetyService();
         }
 
         [Fact]
@@ -38,7 +37,7 @@ namespace DemoTest.Ninety
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
-            for (int i = 1; i < 5; i = i + 1)
+            for (int i = 1; i < 100; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();

@@ -12,13 +12,13 @@ namespace DemoTest
         [Fact]
         public void Add()
         {
-            for (int i = 1; i <= 400000; i++)
+            Parallel(int i = 1; i <= 400000; i++)
             {
                 ColumnModel MianModel = new ColumnModel();
                 foreach (var p in MianModel.GetType().GetProperties().ToList())
                 {
                     //µç»°
-                    if (p.Name == "Column10")
+                    if (p.Name == "Column30")
                     {
                         List<T2_ModifyJsonModel> lst = new List<T2_ModifyJsonModel>();
                         for (int j = 1; j <= 4; j++)
@@ -41,7 +41,7 @@ namespace DemoTest
                         )
                     {
                         List<T2_ModifyLogModel> lst = new List<T2_ModifyLogModel>();
-                        for (int j = 1; j <= 4; j++)
+                        for (int j = 1; j <= 15; j++)
                         {
                             T2_ModifyLogModel mod = new T2_ModifyLogModel();
                             foreach (var t in mod.GetType().GetProperties().ToList())

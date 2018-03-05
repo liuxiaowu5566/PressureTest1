@@ -29,7 +29,7 @@ namespace DemoTest.NinetyAndJson
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(await jsonDataService.GetJsonHousePart(i, 15));
+                result.Add(await jsonDataService.GetJsonHousePart(200, 15));
                 sw.Stop();
                 listTime.Add(sw.Elapsed.TotalMilliseconds);
             }
