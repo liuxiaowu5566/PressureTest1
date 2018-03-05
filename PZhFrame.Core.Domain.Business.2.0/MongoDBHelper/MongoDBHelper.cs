@@ -148,18 +148,13 @@ namespace MongoDBHelper
         ///// <typeparam name="T"></typeparam>
         ///// <param name="model"></param>
         ///// <returns></returns>
-        //public long Update<T>( T model )where T:Entity
+        //public long Update<T>(T model) where T : Entity
         //{
         //    Expression<Func<T, bool>> filter = o => o._id == model._id;
         //    IMongoCollection<T> mongoCollection = getCollection<T>();
         //    BsonDocument bsonDocument = model.ToBsonDocument<T>();
-        //    bsonDocument.Remove("_id");
         //    string bsonDocumentStr = "{$set:" + bsonDocument.ToString() + "}";
         //    bsonDocument = BsonDocument.Parse(bsonDocumentStr);
-        //    var s = Builders<T>.Update.Combine(bsonDocument);
-        //    //return mongoCollection.UpdateOne(Builders<T>.Filter.Where(filter),
-        //    //                    Builders<T>.Update.Set("name", "12334111"),
-        //    //                    new UpdateOptions { IsUpsert = false }).ModifiedCount;
         //    return mongoCollection.UpdateOne<T>(filter, bsonDocument, new UpdateOptions { IsUpsert = false }).ModifiedCount;
         //}
 
