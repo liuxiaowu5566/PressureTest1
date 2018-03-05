@@ -10,6 +10,8 @@ using PZhFrame.ModelLayer.BaseModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -34,13 +36,41 @@ namespace DemoService.Services.Implements.Json
         /// <returns></returns>
         public async Task<ResponseModel<t2_house_part_expand>> GetJsonHousePart(int index, int pageSize)
         {
+            //string sql;
+            //if (index > 1)
+            //{
+            //    sql = $"select top {pageSize} * from t2_house where id > (select max(id) from (select top(({index} - 1) * {pageSize}) id from t2_house order by id) as T) order by id";
+            //}
+            //else
+            //{
+            //    sql = $"select top {pageSize} * from t2_house";
+            //}
             string sql = $"select jsonstr from t2_house order by id offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
+            //string sql = $"select top {pageSize} jsonstr from t2_house where id >(select max(id) from (select id from t2_house order by id offset ({pageSize} * ({index} - 1)) row fetch next {pageSize} rows only) as T) order by id";
             ConcurrentBag<t2_house_part_expand> t2modelList = new ConcurrentBag<t2_house_part_expand>();
             var result = await dataService.GetListAsync<t2_house>(sql);
             ParallelOptions opt = new ParallelOptions
             {
                 MaxDegreeOfParallelism = 2
             };
+            //string data = "Data Source=192.168.0.89 ; Initial Catalog = PressureTest; Persist Security Info=True; User ID = sa; Password=qj12345678@";
+            //ConcurrentBag<t2_house> cb = new ConcurrentBag<t2_house>();
+            //using (SqlConnection conn = new SqlConnection(data))
+            //{
+            //    conn.Open();
+            //    string sql = $"select top {pageSize} jsonstr from t2_house where id >(select max(id) from (select id from t2_house order by id offset ({pageSize} * ({index} - 2)) row fetch next {pageSize} rows only) as T) order by id";
+            //    SqlCommand command = new SqlCommand(sql, conn);
+            //    DataTable dt = new DataTable();
+            //    SqlDataAdapter da = new SqlDataAdapter(command);
+            //    da.Fill(dt);
+            //    Parallel.For(0, dt.Rows.Count, i =>
+            //    {
+            //        Parallel.Invoke(() =>
+            //        {
+            //            cb.Add(new t2_house { jsonstr = dt.Rows[i][0].ToString() });
+            //        });
+            //    });
+            //}
             Parallel.ForEach(result, opt, item =>
             {
                 var model = JsonConvert.DeserializeObject<t2_house_expand>(item.jsonstr);
@@ -61,7 +91,6 @@ namespace DemoService.Services.Implements.Json
                     t2modelList.Add(modeltemp);
                 });
             });
-           
             ResponseModel<t2_house_part_expand> resModel = new ResponseModel<t2_house_part_expand>(t2modelList.ToList().OrderByDescending(o=>o.column1).ToList());
             return resModel;
         }

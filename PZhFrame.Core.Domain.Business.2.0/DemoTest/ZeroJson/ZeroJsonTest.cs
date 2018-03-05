@@ -24,7 +24,7 @@ namespace DemoTest.ZeroJson
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             
-            for (int i = 1; i < 500; i = i + 100)
+            for (int i = 1; i < 101; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();

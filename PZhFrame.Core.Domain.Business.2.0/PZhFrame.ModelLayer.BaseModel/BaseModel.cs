@@ -277,7 +277,7 @@ namespace PZhFrame.ModelLayer.BaseModels
             {
                 var Types = s.GetType();//获得类型  
                 var Typed = typeof(D);
-                foreach (PropertyInfo sp in Types.GetProperties())//获得类型的属性字段  
+                Parallel.ForEach (Types.GetProperties(),sp=>//获得类型的属性字段  
                 {
                     foreach (PropertyInfo dp in Typed.GetProperties())
                     {
@@ -286,7 +286,7 @@ namespace PZhFrame.ModelLayer.BaseModels
                             dp.SetValue(d, sp.GetValue(s, null), null);//获得s对象属性的值复制给d对象的属性  
                         }
                     }
-                }
+                });
             }
             catch (Exception ex)
             {

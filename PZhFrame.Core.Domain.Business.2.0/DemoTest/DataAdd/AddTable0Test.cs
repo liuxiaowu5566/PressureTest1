@@ -1,11 +1,5 @@
-﻿using DemoService.Services.Data;
-using Models.Model;
-using Models.Model.t6;
-using PZhFrame.Data.DataService;
-using System;
-using System.Collections.Generic;
+﻿using Models.Model.t6;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace DemoTest
