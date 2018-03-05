@@ -4,6 +4,7 @@
 
 using DemoService.Services.Interface.Zero;
 using Microsoft.AspNetCore.Mvc;
+using Models.Model;
 using System.Threading.Tasks;
 
 namespace DemoService.Controllers.Zero
@@ -18,11 +19,16 @@ namespace DemoService.Controllers.Zero
         }
 
         [HttpGet, Route("House/{pageIndex}/{pagesize}")]
-        public async Task<IActionResult> House(int pageIndex, int pagesize)
+        //public async Task<IActionResult> House(int pageIndex, int pagesize)
+        //{
+        //    var result = await zeroService.GetHouse(pageIndex, pagesize);
+        //    return this.Ok(result);
+        //}
+        public ResponseModel<Result> House(int pageIndex, int pagesize)
         {
-            var result = await zeroService.GetHouse(pageIndex, pagesize);
-            return this.Ok(result);
+            return zeroService.GetHouse(pageIndex, pagesize);
         }
+
         [HttpGet, Route("HouseInfo/{id}")]
         public async Task<IActionResult> HouseInfo(string id)
         {

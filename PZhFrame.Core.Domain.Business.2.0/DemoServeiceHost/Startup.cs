@@ -1,4 +1,5 @@
 using DemoService.Services.Implements.Json;
+using DemoService.Services.Implements.Mongo;
 using DemoService.Services.Implements.Ninety;
 using DemoService.Services.Implements.NinetyAndJson;
 using DemoService.Services.Implements.Vertical;
@@ -6,6 +7,7 @@ using DemoService.Services.Implements.Zero;
 using DemoService.Services.Implements.ZeroJson;
 using DemoService.Services.Implements.ZeroX;
 using DemoService.Services.Interface.Json;
+using DemoService.Services.Interface.Mongo;
 using DemoService.Services.Interface.Ninety;
 using DemoService.Services.Interface.NinetyAndJson;
 using DemoService.Services.Interface.Vertical;
@@ -45,6 +47,7 @@ namespace DemoServeiceHost
             services.AddTransient<IZeroJsonService, ZeroJsonService>();
             services.AddTransient<INinetyService, NinetyService>();
             services.AddTransient<INinetyAndJsonService, NinetyAndJsonService>();
+            services.AddTransient<IMongoService, MongoService>();
             services.AddMvc();
         }
 

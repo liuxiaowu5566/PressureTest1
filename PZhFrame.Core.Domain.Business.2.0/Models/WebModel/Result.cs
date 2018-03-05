@@ -1,12 +1,13 @@
 ﻿using PZhFrame.Data.DataService;
 using PZhFrame.Data.Repository.Extension;
+using PZhFrame.ModelLayer.BaseModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Models.Model
 {
-    public class Result
+    public class Result : BaseModel
     {
         [ExplicitKey]
         [Head("column1", "-")]
