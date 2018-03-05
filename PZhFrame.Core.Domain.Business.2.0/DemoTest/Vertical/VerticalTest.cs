@@ -4,10 +4,8 @@
 using DemoService.Services.Implements.Vertical;
 using DemoService.Services.Interface.Vertical;
 using Models.Model;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Xunit;
 namespace DemoTest.Vertical
 {

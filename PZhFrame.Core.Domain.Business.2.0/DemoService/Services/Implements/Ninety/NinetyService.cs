@@ -97,5 +97,7 @@ namespace DemoService.Services.Implements.Ninety
             }
             return new ResponseModel<t1_history_nunety>(listModel);
         }
+
+
     }
 }
