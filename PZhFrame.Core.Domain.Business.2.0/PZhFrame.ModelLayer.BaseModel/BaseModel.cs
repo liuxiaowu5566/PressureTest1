@@ -443,13 +443,22 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// <returns></returns>
         public string formatSqlCallExpression(MethodCallExpression func)
         {
-            //获得调用者的内容元素
-            //var getter = GetMemberName((MemberExpression)((BinaryExpression)func.Object).Left);
-            //var data = getter();
-            //获得字段
+            string sqlStr = "";
+            //获取字段名
+            string fileName = func.Object.ToString();
+            fileName = fileName.Substring(fileName.LastIndexOf('.'));
+            string fileValue = func.Arguments[0].ToString();
+            //去掉前后的""
+            fileValue = fileValue.Substring(1, fileValue.Length - 2);
+            switch (func.Method.Name)
+            {
+                case "Contains":
+                    sqlStr = $"{fileName} like '%{fileValue}%'";
+                    break;
+            }
+
             var caller = func.Arguments[0];
-            var s = getMemberName((MemberExpression)((BinaryExpression)caller).Right);
-            return "";
+            return sqlStr;
         }
 
         /// <summary>
@@ -471,9 +480,44 @@ namespace PZhFrame.ModelLayer.BaseModels
         private string getMemberValue(MemberExpression expression)
         {
             if (expression.NodeType != ExpressionType.MemberAccess) throw new Exception($"{expression.NodeType} convert to MemberExpression error");
-            var getter = Expression.Lambda<Func<int>>(expression).Compile();
-            var value = getter();
-            return value.ToString();
+            //var getter = Expression.Lambda<Func<int>>(expression).Compile();
+            //var value = getter();
+            string value = "";
+            switch (expression.Type.Name)
+            {
+                case "Int16":
+                    value = Expression.Lambda<Func<Int16>>(expression).Compile()().ToString();
+                    break;
+                case "Int32":
+                    value = Expression.Lambda<Func<int>>(expression).Compile()().ToString();
+                    break;
+                case "Int64":
+                    value = Expression.Lambda<Func<Int64>>(expression).Compile()().ToString();
+                    break;
+                case "Single":
+                    value = Expression.Lambda<Func<float>>(expression).Compile()().ToString();
+                    break;
+                case "Double":
+                    value = Expression.Lambda<Func<double>>(expression).Compile()().ToString();//Boolean
+                    break;
+                case "String":
+                    value = Expression.Lambda<Func<string>>(expression).Compile()().ToString();
+                    break;
+                case "Boolean":
+                    value = Expression.Lambda<Func<bool>>(expression).Compile()().ToString();
+                    break;
+                case "Guid":
+                    value = Expression.Lambda<Func<Guid>>(expression).Compile()().ToString();
+                    break;
+                case "DateTime":
+                    value = Expression.Lambda<Func<DateTime>>(expression).Compile()().ToString();
+                    break;
+                default:
+                    value = Expression.Lambda<Func<object>>(expression).Compile()().ToString();
+                    break;
+            }
+            return value;
+            
         }
 
         /// <summary>

@@ -4,8 +4,10 @@
 using DemoService.Services.Implements.Vertical;
 using DemoService.Services.Interface.Vertical;
 using Models.Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Xunit;
 namespace DemoTest.Vertical
 {
@@ -38,15 +40,23 @@ namespace DemoTest.Vertical
         {
             List<ResponseModel<ColumnModel>> result = new List<ResponseModel<ColumnModel>>();
             List<double> listTime = new List<double>();
-            List<int> list = new List<int> { 1, 2, 3, 4, 100, 200, 300 };
+            List<int> list = new List<int> { 1, 2, 3,4,100, 200, 300 };
             foreach (var i in list)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                result.Add(verticalService.GetHouse(i, 150));
+                result.Add(verticalService.GetHouse(i, 15));
                 sw.Stop();
                 listTime.Add(sw.Elapsed.TotalMilliseconds);
             }
+
+            FileStream fs = new FileStream("D:\\test1.txt", FileMode.Append);
+            StreamWriter fsw = new StreamWriter(fs);
+            fsw.WriteLine($"-----1, 2, 3, 4, 100, 200, 300    15-------{DateTime.Now.ToString()}------PressureTest2-------");
+            foreach(var i in listTime)
+                fsw.WriteLine(i.ToString());
+            fsw.Close();
+            fs.Close();
 
             //Stopwatch sw = new Stopwatch();
             //sw.Start();
