@@ -68,7 +68,7 @@ namespace DemoService.Services.Implements.Vertical
             {
                 T model = new T();
                 //List<new_filed_modify_log> filedValues = total.Where(o => o.resource_id == info.id).ToList();
-                List<t1_history> filedValues = new t1_history(true).Select<t1_history>(info.id, "houseid").ToList();
+                List<t1_history> filedValues = new t1_history(true).Select<t1_history>(o=>o.houseid==info.id).ToList();
                 Parallel.ForEach(properties, opt, p =>
                 {
                     t1_code filed = fileds.Where(o => o.name == p.Name).FirstOrDefault();

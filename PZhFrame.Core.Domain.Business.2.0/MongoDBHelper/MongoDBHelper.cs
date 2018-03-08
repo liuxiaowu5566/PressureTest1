@@ -9,6 +9,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using MongoDB.Bson;
 using MongoDB.Driver.Core;
+using MongoDB.Driver.GridFS;
+using System.Threading.Tasks;
 
 namespace MongoDBHelper
 {
@@ -74,6 +76,29 @@ namespace MongoDBHelper
         }
 
         /// <summary>
+        /// 新增 异步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        async public Task<int> InsertAsync<T>(T model)
+        {
+            int res = 0;
+            try
+            {
+                IMongoCollection<T> mongoCollection = getCollection<T>();
+                await mongoCollection.InsertOneAsync(model);
+                res = 1;
+            }
+            catch (Exception e)
+            {
+                res = 0;
+            }
+            return res;
+        }
+
+
+        /// <summary>
         /// 新增
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -96,6 +121,28 @@ namespace MongoDBHelper
         }
 
         /// <summary>
+        /// 新增 异步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        async public Task<int> InsertAsync<T>(List<T> modelList)
+        {
+            int res = 0;
+            try
+            {
+                IMongoCollection<T> mongoCollection = getCollection<T>();
+                await mongoCollection.InsertManyAsync(modelList);
+                res = modelList.Count;
+            }
+            catch (Exception e)
+            {
+                res = 0;
+            }
+            return res;
+        }
+
+        /// <summary>
         /// 查询
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -107,6 +154,17 @@ namespace MongoDBHelper
             return mongoCollection.Find(filter).ToList() ;
         }
 
+        /// <summary>
+        /// 查询 异步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        async public Task<List<T>> SelectAsync<T>(Expression<Func<T, bool>> filter)
+        {
+            IMongoCollection<T> mongoCollection = getCollection<T>();
+            return (await mongoCollection.FindAsync(filter)).ToList();
+        }
 
         /// <summary>
         /// 查询  分页
@@ -142,27 +200,50 @@ namespace MongoDBHelper
             return mongoCollection.UpdateOne<T>(filter, bsonDocument, new UpdateOptions { IsUpsert=false}).ModifiedCount;
         }
 
+        /// <summary>
+        /// 更新 异步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        async public Task<long> UpdateAsync<T>(Expression<Func<T, bool>> filter, T model)
+        {
+            IMongoCollection<T> mongoCollection = getCollection<T>();
+            BsonDocument bsonDocument = model.ToBsonDocument<T>();
+            bsonDocument.Remove("_id");
+            string bsonDocumentStr = "{$set:" + bsonDocument.ToString() + "}";
+            bsonDocument = BsonDocument.Parse(bsonDocumentStr);
+            var s = Builders<T>.Update.Combine(bsonDocument);
+            //return mongoCollection.UpdateOne(Builders<T>.Filter.Where(filter),
+            //                    Builders<T>.Update.Set("name", "12334111"),
+            //                    new UpdateOptions { IsUpsert = false }).ModifiedCount;
+            return ( await mongoCollection.UpdateOneAsync<T>(filter, bsonDocument, new UpdateOptions { IsUpsert = false })).ModifiedCount;
+        }
+
         ///// <summary>
         ///// 更新
         ///// </summary>
         ///// <typeparam name="T"></typeparam>
         ///// <param name="model"></param>
         ///// <returns></returns>
-        //public long Update<T>( T model )where T:Entity
+        //public long Update<T>(T model) where T : Entity
         //{
         //    Expression<Func<T, bool>> filter = o => o._id == model._id;
         //    IMongoCollection<T> mongoCollection = getCollection<T>();
         //    BsonDocument bsonDocument = model.ToBsonDocument<T>();
-        //    bsonDocument.Remove("_id");
         //    string bsonDocumentStr = "{$set:" + bsonDocument.ToString() + "}";
         //    bsonDocument = BsonDocument.Parse(bsonDocumentStr);
-        //    var s = Builders<T>.Update.Combine(bsonDocument);
-        //    //return mongoCollection.UpdateOne(Builders<T>.Filter.Where(filter),
-        //    //                    Builders<T>.Update.Set("name", "12334111"),
-        //    //                    new UpdateOptions { IsUpsert = false }).ModifiedCount;
         //    return mongoCollection.UpdateOne<T>(filter, bsonDocument, new UpdateOptions { IsUpsert = false }).ModifiedCount;
         //}
 
+        /// <summary>
+        /// 左关联
+        /// </summary>
+        /// <typeparam name="TInput">主表</typeparam>
+        /// <typeparam name="TOutput">返回类型</typeparam>
+        /// <param name="jsonJoinStr"></param>
+        /// <returns></returns>
         public List<TOutput> Join<TInput,TOutput>(string jsonJoinStr)
         {
             IMongoCollection<TInput> mongoCollection = getCollection<TInput>();
@@ -183,6 +264,121 @@ namespace MongoDBHelper
             return mongoCollection.DeleteMany(filter).DeletedCount;
         }
 
+        /// <summary>
+        /// 物理删除 异步
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        async public Task<long> DeleteAsync<T>(Expression<Func<T, bool>> filter)
+        {
+            IMongoCollection<T> mongoCollection = getCollection<T>();
+            return (await mongoCollection.DeleteManyAsync(filter)).DeletedCount;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——上传
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileData"></param>
+        /// <returns></returns>
+        public ObjectId UpLoad(string fileName, byte[] fileData)
+        {
+            var gridfs = new GridFSBucket(database);
+            ObjectId oId = gridfs.UploadFromBytes(fileName, fileData);
+            return oId;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——上传异步
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileData"></param>
+        /// <returns></returns>
+        async public Task<ObjectId> UpLoadAsync(string fileName, byte[] fileData)
+        {
+            var gridfs = new GridFSBucket(database);
+            ObjectId oId = await gridfs.UploadFromBytesAsync(fileName, fileData);
+            return oId;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——上传
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileStream"></param>
+        /// <returns></returns>
+        public ObjectId UpLoad(string fileName, Stream fileStream)
+        {
+            var gridfs = new GridFSBucket(database, new GridFSBucketOptions
+            {
+            });
+            ObjectId oId = gridfs.UploadFromStream(fileName, fileStream);
+            return oId;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——上传 异步
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileStream"></param>
+        /// <returns></returns>
+        async public Task<ObjectId> UpLoadAsync(string fileName, Stream fileStream)
+        {
+            var gridfs = new GridFSBucket(database, new GridFSBucketOptions
+            {
+            });
+            ObjectId oId = await gridfs.UploadFromStreamAsync(fileName, fileStream);
+            return oId;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——下载
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public byte[] DownLoad(string fileName)
+        {
+            var gridfs = new GridFSBucket(database);
+            byte[] fileData = gridfs.DownloadAsBytesByName(fileName);
+            return fileData;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——下载 异步
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        async public Task<byte[]> DownLoadAsync(string fileName)
+        {
+            var gridfs = new GridFSBucket(database);
+            byte[] fileData = await gridfs.DownloadAsBytesByNameAsync(fileName);
+            return fileData;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——下载
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
+        public byte[] DownLoad(ObjectId fileId)
+        {
+            var gridfs = new GridFSBucket(database);
+            byte[] fileData = gridfs.DownloadAsBytes(fileId);
+            return fileData;
+        }
+
+        /// <summary>
+        /// GridFS文件操作——下载
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
+        async public Task<byte[]> DownLoadAsync(ObjectId fileId)
+        {
+            var gridfs = new GridFSBucket(database);
+            byte[] fileData = await gridfs.DownloadAsBytesAsync(fileId);
+            return fileData;
+        }
 
         public void Dispose()
         {
