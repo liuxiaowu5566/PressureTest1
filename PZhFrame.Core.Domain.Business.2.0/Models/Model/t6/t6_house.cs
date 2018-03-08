@@ -26,7 +26,7 @@ namespace Models.Model.t6
         /// Nullable:True
         /// </summary>           
         [Head("column2", "-")]
-        public string column2 { get; set; }
+        public int? column2 { get; set; }
 
         /// <summary>
         /// Desc:
@@ -90,7 +90,7 @@ namespace Models.Model.t6
         /// Nullable:True
         /// </summary>           
         [Head("column10", "-")]
-        public int? column10 { get; set; }
+        public string column10 { get; set; }
 
         /// <summary>
         /// Desc:
@@ -250,7 +250,7 @@ namespace Models.Model.t6
         /// Nullable:True
         /// </summary>           
         [Head("column30", "-")]
-        public string column30 { get; set; }
+        public int? column30 { get; set; }
 
         /// <summary>
         /// Desc:

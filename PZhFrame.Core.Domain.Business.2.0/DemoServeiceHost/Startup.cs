@@ -41,6 +41,7 @@ namespace DemoServeiceHost
             
             services.AddTransient<IZeroService, ZeroService>();
             services.AddTransient<IZeroXService, ZeroXService>();
+            services.AddTransient<IZeroX3Service, ZeroX3Service>();
             services.AddTransient<IVerticalService, VerticalService>();
             services.AddTransient<IJsonDataService, JsonDataService>();
             services.AddTransient<INineJsonService, NineJsonService>();

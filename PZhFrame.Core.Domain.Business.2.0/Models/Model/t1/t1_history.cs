@@ -23,6 +23,6 @@ namespace Models.Model.t1
         public int houseid { get; set; }
         public string value { get; set; }
         public DateTime createtime { get; set; }
-        public Guid operatorid { get; set; }
+        public Guid opreatorid { get; set; }
     }
 }

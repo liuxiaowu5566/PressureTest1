@@ -8,6 +8,7 @@ namespace DemoTest
 
     public class AddTable90Test1
     {
+        /*90度的字段*/
         [Fact]
         public void AddTableData()
         {
@@ -20,11 +21,11 @@ namespace DemoTest
                 code.Insert();
             }
         }
-
+/*-----------------------------------------------------------------------------------------*/
         [Fact]
         public void AddHouseData()
         {
-            for (int i = 1; i <= 400000; i++)
+            for (int i = 1; i <= 40000; i++)
             {
                 t1_house house = new t1_house();
                 house.id = i;
@@ -36,13 +37,13 @@ namespace DemoTest
         [Fact]
         public void AddHistoryData()
         {
-            for (int i = 137910; i <= 400000; i++)
+            for (int i = 37085; i <= 40000; i++)
             {
                 for (int j = 1; j <= 200; j++)
                 {
-                    if (j == 4 || j == 5 || j == 6 || j == 7 || j == 8)
+                    if (j == 2 || j == 3 || j == 4 || j == 5 || j == 6|| j == 7 || j == 8 || j == 9 || j == 10 || j == 11|| j == 12 || j == 13 || j == 14 || j == 15)
                     {
-                        for (int k = 1; k <= 5; k++)
+                        for (int k = 1; k <= 14; k++)
                         {
                             AddModel(i, j);
                         }
@@ -55,7 +56,7 @@ namespace DemoTest
                 }
             }
         }
-        public int id = 30340099;
+        public int id = 14166088;
         private void AddModel(int i, int j)
         {
             id++;
@@ -65,7 +66,7 @@ namespace DemoTest
                 codeid = j,
                 houseid = i,
                 createtime = DateTime.Now,
-                operatorid = Guid.NewGuid(),
+                opreatorid = Guid.NewGuid(),
                 value = i.ToString() + "-" + "column" + j.ToString()
 
             };

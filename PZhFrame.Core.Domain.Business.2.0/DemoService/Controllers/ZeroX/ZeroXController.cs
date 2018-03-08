@@ -6,6 +6,7 @@ using DemoService.Services.Interface.Zero;
 using DemoService.Services.Interface.ZeroX;
 using Microsoft.AspNetCore.Mvc;
 using Models.Model;
+using Models.Model.t6;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,11 +37,11 @@ namespace DemoService.Controllers.ZeroX
         */
 
         [HttpGet, Route("QP1_9/{index}/{pagesize}")]
-        public async Task<ResponseModel<t6_house1_9>> QP1_9(int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t6_house>> QP1_9(int index = 1, int pagesize = 15)
         {
-            return await zeroXService.QP1_9(index, pagesize);
+            return await zeroXService.QueryPage(index, pagesize);
         }
-
+        /*
         /// <summary>
         /// 查询某个字段的历史记录
         /// </summary>
@@ -52,5 +53,6 @@ namespace DemoService.Controllers.ZeroX
         {
             return await zeroXService.que(houseId,name);
         }
+        */
     }
 }

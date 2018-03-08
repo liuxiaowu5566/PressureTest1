@@ -12,7 +12,7 @@ namespace DemoTest
         [Fact]
         public void Add()
         {
-            Parallel(int i = 1; i <= 400000; i++)
+            for(int i = 1; i <= 400000; i++)
             {
                 ColumnModel MianModel = new ColumnModel();
                 foreach (var p in MianModel.GetType().GetProperties().ToList())
