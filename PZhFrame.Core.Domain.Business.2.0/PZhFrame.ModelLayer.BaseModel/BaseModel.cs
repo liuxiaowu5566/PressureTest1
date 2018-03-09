@@ -130,8 +130,8 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// <returns></returns>
         public virtual List<T> Select<T>(Expression<Func<T, bool>> expression)
         {
-            Expression e = expression.Body;
-            return dbHelper.Select<T>(selectSql());
+            string sqlWhere = $" where {getSqlByExpression(expression.Body)}";
+            return dbHelper.Select<T>(selectSql()+sqlWhere);
         }
 
         /// <summary>
@@ -365,6 +365,198 @@ namespace PZhFrame.ModelLayer.BaseModels
             return resList;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        private string getSqlByExpression(Expression func)
+        {
+            string sqlStr = "";
+            switch (func.NodeType)
+            {
+                case ExpressionType.AndAlso:
+                    sqlStr = $" {getSqlByExpression((((BinaryExpression)func).Left))} and {getSqlByExpression((((BinaryExpression)func).Right))}";
+                    break;
+                case ExpressionType.OrElse:
+                    sqlStr = $" {getSqlByExpression((((BinaryExpression)func).Left))} or {getSqlByExpression((((BinaryExpression)func).Right))}";
+                    break;
+                case ExpressionType.Equal:
+                    sqlStr = formatSqlExpression(func, "="); break;
+                case ExpressionType.NotEqual:
+                    sqlStr = formatSqlExpression(func, "<>"); ; break;
+                case ExpressionType.GreaterThanOrEqual:
+                    sqlStr = formatSqlExpression(func, ">=");
+                    break;
+                case ExpressionType.GreaterThan:
+                    sqlStr = formatSqlExpression(func, ">");
+                    break;
+                case ExpressionType.LessThanOrEqual:
+                    sqlStr = formatSqlExpression(func, "<=");
+                    break;
+                case ExpressionType.LessThan:
+                    sqlStr = formatSqlExpression(func, "<");
+                    break;
+                case ExpressionType.Call:
+
+                    sqlStr = formatSqlCallExpression((MethodCallExpression)func);
+                    break;
+            }
+            return sqlStr;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="func"></param>
+        /// <param name="operatorStr"></param>
+        /// <returns></returns>
+        private string formatSqlExpression(Expression func, string operatorStr)
+        {
+            string sqlStr = null;
+            if (((BinaryExpression)func).Right.NodeType == ExpressionType.Constant)
+            {
+                if (((ConstantExpression)((BinaryExpression)func).Right).Value == null)
+                {
+                    if (operatorStr == "=") operatorStr = "is";
+                    else if (operatorStr == "<>") operatorStr = "is not";
+                    sqlStr = $"{getMemberName((MemberExpression)((BinaryExpression)func).Left)} {operatorStr} null ";
+                }
+                else
+                    sqlStr = $"{getMemberName((MemberExpression)((BinaryExpression)func).Left)}{operatorStr}'{getConstantValue((ConstantExpression)((BinaryExpression)func).Right)}'";
+            }
+            else if (((BinaryExpression)func).Right.NodeType == ExpressionType.Convert)
+            {
+                sqlStr = $"{getMemberName((MemberExpression)((BinaryExpression)func).Left)}{operatorStr}'{getConvertValue((UnaryExpression)((BinaryExpression)func).Right)}'";
+            }
+            else if (((BinaryExpression)func).Right.NodeType == ExpressionType.MemberAccess)
+            {
+                sqlStr = $"{getMemberName((MemberExpression)((BinaryExpression)func).Left)}{operatorStr}'{(getMemberValue((MemberExpression)((BinaryExpression)func).Right))}'";
+            }
+            return sqlStr;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public string formatSqlCallExpression(MethodCallExpression func)
+        {
+            string sqlStr = "";
+            //获取字段名
+            string fileName = func.Object.ToString();
+            fileName = fileName.Substring(fileName.LastIndexOf('.'));
+            string fileValue = func.Arguments[0].ToString();
+            //去掉前后的""
+            fileValue = fileValue.Substring(1, fileValue.Length - 2);
+            switch (func.Method.Name)
+            {
+                case "Contains":
+                    sqlStr = $"{fileName} like '%{fileValue}%'";
+                    break;
+            }
+
+            var caller = func.Arguments[0];
+            return sqlStr;
+        }
+
+        /// <summary>
+        /// 获取成员变量名称
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        private string getMemberName(MemberExpression expression)
+        {
+            if (expression.NodeType != ExpressionType.MemberAccess) throw new Exception($"{expression.NodeType} convert to MemberExpression error");
+            return expression.Member.Name;
+        }
+
+        /// <summary>
+        /// 获取成员变量名称
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        private string getMemberValue(MemberExpression expression)
+        {
+            if (expression.NodeType != ExpressionType.MemberAccess) throw new Exception($"{expression.NodeType} convert to MemberExpression error");
+            //var getter = Expression.Lambda<Func<int>>(expression).Compile();
+            //var value = getter();
+            string value = "";
+            switch (expression.Type.Name)
+            {
+                case "Int16":
+                    value = Expression.Lambda<Func<Int16>>(expression).Compile()().ToString();
+                    break;
+                case "Int32":
+                    value = Expression.Lambda<Func<int>>(expression).Compile()().ToString();
+                    break;
+                case "Int64":
+                    value = Expression.Lambda<Func<Int64>>(expression).Compile()().ToString();
+                    break;
+                case "Single":
+                    value = Expression.Lambda<Func<float>>(expression).Compile()().ToString();
+                    break;
+                case "Double":
+                    value = Expression.Lambda<Func<double>>(expression).Compile()().ToString();//Boolean
+                    break;
+                case "String":
+                    value = Expression.Lambda<Func<string>>(expression).Compile()().ToString();
+                    break;
+                case "Boolean":
+                    value = Expression.Lambda<Func<bool>>(expression).Compile()().ToString();
+                    break;
+                case "Guid":
+                    value = Expression.Lambda<Func<Guid>>(expression).Compile()().ToString();
+                    break;
+                case "DateTime":
+                    value = Expression.Lambda<Func<DateTime>>(expression).Compile()().ToString();
+                    break;
+                default:
+                    value = Expression.Lambda<Func<object>>(expression).Compile()().ToString();
+                    break;
+            }
+            return value;
+            
+        }
+
+        /// <summary>
+        /// 获取常量值
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        private string getConstantValue(ConstantExpression expression)
+        {
+            if (expression.NodeType != ExpressionType.Constant) throw new Exception($"{expression.NodeType} convert to ConstantExpression error");
+            return expression.Value.ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        private string getConvertValue(UnaryExpression expression)
+        {
+            string res = "";
+            if (expression.NodeType != ExpressionType.Convert) throw new Exception($"{expression.NodeType} convert to UnaryExpression error");
+            if (expression.Operand.Type == typeof(Boolean))
+            {
+                var value = ((ConstantExpression)expression.Operand).Value;
+                res = (bool)value ? "1" : "0";
+            }
+            else if ((expression.Operand.Type == typeof(DateTime)))
+            {
+                var value = expression.Operand;
+                res = value.ToString();
+                res = "";
+            }
+            else
+            {
+                res = ((ConstantExpression)expression.Operand).Value.ToString();
+            }
+            return res;
+        }
 
         #endregion
     }

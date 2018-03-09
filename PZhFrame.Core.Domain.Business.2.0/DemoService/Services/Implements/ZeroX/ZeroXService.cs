@@ -5,6 +5,7 @@
 using DemoService.Services.Interface.Zero;
 using DemoService.Services.Interface.ZeroX;
 using Models.Model;
+using Models.Model.t6;
 using PZhFrame.Data.DataService;
 using PZhFrame.ModelLayer.BaseModels;
 using PZhFrame.ModelLayer.Models.Models;
@@ -63,7 +64,7 @@ namespace DemoService.Services.Implements.ZeroX
             return new ResponseModel<t6_house1_9>(modelList);
         }
         */
-        public async Task<ResponseModel<t6_house1_9>> QP1_9(int index, int pagesize)
+        public async Task<ResponseModel<t6_house>> QueryPage(int index, int pagesize)
         {
             string sql = $@"select house.column1,house.column2,house.column3,house.column4,house.column5,house.column6,house.column7,house.column8,house.column9
                                     from t6_house as house
@@ -72,10 +73,10 @@ namespace DemoService.Services.Implements.ZeroX
                                     	  group by column2) as id
                                     on house.column1 = id.column1
                                     order by house.column9 desc offset {pagesize * (index - 1)} row fetch next {pagesize} rows only";
-            List<t6_house1_9> list = dataService.GetModelList<t6_house1_9>(sql);
-            return new ResponseModel<t6_house1_9>(list);
+            List<t6_house> list = dataService.GetModelList<t6_house>(sql);
+            return new ResponseModel<t6_house>(list);
         }
-
+        /*
         /// <summary>
         /// 查询某个字段的历史记录
         /// </summary>
@@ -88,5 +89,6 @@ namespace DemoService.Services.Implements.ZeroX
             List<string> listV = dataService.GetLstStr(sql);
             return listV;
         }
+        */
     }
 }
