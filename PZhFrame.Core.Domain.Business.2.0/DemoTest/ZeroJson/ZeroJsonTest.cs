@@ -23,12 +23,12 @@ namespace DemoTest.ZeroJson
         public async void QueryPageTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
-            
-            for (int i = 1; i < 100; i = i + 1)
+            List<ResponseModel<T4_House_Part>> result = new List<ResponseModel<T4_House_Part>>();
+            for (int i = 4; i < 5; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                ResponseModel<T4_House_Part> result= await zeroJsonService.QueryPage(i, 15);
+                result.Add(await zeroJsonService.QueryPage(i, 15));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }
