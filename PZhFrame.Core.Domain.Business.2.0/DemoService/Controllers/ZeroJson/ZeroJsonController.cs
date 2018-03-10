@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static PZhFrame.Core.Infrastructure.Lib.GenericQueryAnalizer;
 
 namespace DemoService.Controllers.ZeroJson
 {
@@ -30,10 +31,10 @@ namespace DemoService.Controllers.ZeroJson
         /// <param name="index"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        [HttpGet, Route("QueryPage/{index}/{pagesize}")]
-        public Task<ResponseModel<T4_House_Part>> QueryPage(int index = 1, int pagesize = 15)
+        [HttpPost, Route("QueryPage/{index}/{pagesize}")]
+        public Task<ResponseModel<T4_House_Part>> QueryPage([FromBody]GenericQueryModel queryBody,int index = 1, int pagesize = 15 )
         {
-            return  zeroJsonService.QueryPage(index, pagesize);
+            return  zeroJsonService.QueryPage(queryBody, index, pagesize);
         }
 
         /// <summary>
