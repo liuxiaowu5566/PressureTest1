@@ -107,7 +107,7 @@ namespace PZhFrame.ModelLayer.BaseModels
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public virtual List<T> SelectPart<T>(string tableName, int index, int pageSize, string orderFiled = " modifytime desc ")
+        public virtual List<T> SelectPart<T>(string tableName, int index, int pageSize, string whereSql, string orderFiled = " modifytime desc ")
         {
             Type typeInfo = typeof(T);
             var pros = typeInfo.GetProperties().ToList();
@@ -119,7 +119,7 @@ namespace PZhFrame.ModelLayer.BaseModels
             }
             columns = columns.Substring(0, columns.Length - 2);
             // 去缓存服务（层）中取数据
-            return dbHelper.Select<T>(selectSql(columns, tableName, index, pageSize, orderFiled));
+            return dbHelper.Select<T>(selectSql(columns, tableName, index, pageSize, whereSql, orderFiled));
         }
 
         /// <summary>
@@ -346,10 +346,11 @@ namespace PZhFrame.ModelLayer.BaseModels
             return $"select * from {schema}.{tableName} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
         }
 
-        private string selectSql(string columns, string tableN, int index, int pageSize, string orderFiled = "modifytime desc")
+        private string selectSql(string columns, string tableN, int index, int pageSize, string whereSql, string orderFiled = "modifytime desc")
         {
-            return $"select {columns} from {schema}.{tableN} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
+            return $"select {columns} from {schema}.{tableN} where 1=1 {whereSql} order by {orderFiled} offset {pageSize * (index - 1)} row fetch next {pageSize} rows only";
         }
+
 
         private List<FiledAuth> GetFiledAuth(string filedId, string accountId)
         {

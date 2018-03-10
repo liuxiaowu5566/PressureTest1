@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Xunit;
+using static PZhFrame.Core.Infrastructure.Lib.GenericQueryAnalizer;
 
 namespace DemoTest.ZeroJson
 {
@@ -22,13 +23,16 @@ namespace DemoTest.ZeroJson
         [Fact]
         public async void QueryPageTime()
         {
+            GenericQueryModel query = new GenericQueryModel();
+            query.TryAddQuery("column3", "1", "like");
+
             List<TimeSpan> listTime = new List<TimeSpan>();
-            
-            for (int i = 1; i < 100; i = i + 1)
+            List<ResponseModel<T4_House_Part>> result = new List<ResponseModel<T4_House_Part>>();
+            for (int i = 100; i < 400; i = i + 100)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                ResponseModel<T4_House_Part> result= await zeroJsonService.QueryPage(i, 15);
+                result.Add(await zeroJsonService.QueryPage(query,i, 150));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }

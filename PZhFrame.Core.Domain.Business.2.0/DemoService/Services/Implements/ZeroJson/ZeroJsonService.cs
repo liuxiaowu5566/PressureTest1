@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static PZhFrame.Core.Infrastructure.Lib.GenericQueryAnalizer;
 
 namespace DemoService.Services.Implements.ZeroJson
 {
@@ -38,15 +39,18 @@ namespace DemoService.Services.Implements.ZeroJson
         /// <param name="index">页数</param>
         /// <param name="pagesize">页大小</param>
         /// <returns></returns>
-        public async Task<ResponseModel<T4_House_Part>> QueryPage(int index, int pagesize)
+        public async Task<ResponseModel<T4_House_Part>> QueryPage(GenericQueryModel queryBody, int index, int pagesize)
         {
+            string wheresql = Build(queryBody);
             // 获取修改的列
             List<t4_code> fileds = await new t4_code().SelectAsync<t4_code>();
             // 获取前9项实体属性
             Type typeInfo = typeof(T4_House_Part);
             var properties = typeInfo.GetProperties().ToList();
             // 获取房源
-            List<T4_House_Part> houseList = new T4_House_Part().SelectPart<T4_House_Part>(typeof(T4_House).Name, index, pagesize, "column1");
+            List<T4_House_Part> houseList = new T4_House_Part().SelectPart<T4_House_Part>(typeof(T4_House).Name, index, pagesize, wheresql, "column1");
+
+
             Parallel.ForEach(houseList, info =>
            {
                // 获取修改历史信息
