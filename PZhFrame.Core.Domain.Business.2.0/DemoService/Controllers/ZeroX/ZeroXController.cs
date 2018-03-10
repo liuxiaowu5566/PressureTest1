@@ -10,6 +10,7 @@ using Models.Model.t6;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static PZhFrame.Core.Infrastructure.Lib.GenericQueryAnalizer;
 
 namespace DemoService.Controllers.ZeroX
 {
@@ -22,37 +23,16 @@ namespace DemoService.Controllers.ZeroX
             this.zeroXService = zeroXService;
         }
 
-        /// <summary>
-        /// 每页15条查询1-9字段
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="pagesize"></param>
-        /// <returns></returns>
-        /*
-        [HttpGet, Route("QueryPage1_9/{index}/{pagesize}")]
-        public async Task<ResponseModel<t6_house1_9>> QueryPage1_9(int index = 1, int pagesize = 15)
-        {
-            return await zeroXService.QueryPage1_9(index, pagesize);
-        }
-        */
-
-        [HttpGet, Route("QP1_9/{index}/{pagesize}")]
-        public async Task<ResponseModel<t6_house>> QP1_9(int index = 1, int pagesize = 15)
+        [HttpGet, Route("QueryPage/{index}/{pagesize}")]
+        public async Task<ResponseModel<t6_house>> QueryPage(int index = 1, int pagesize = 15)
         {
             return await zeroXService.QueryPage(index, pagesize);
         }
-        /*
-        /// <summary>
-        /// 查询某个字段的历史记录
-        /// </summary>
-        /// <param name="houseId"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [HttpGet,Route("QueryRecord/{houseId}/{name}")]
-        public async Task<List<string>> QueryRecord(string houseId,string name)
+
+        [HttpPost, Route("QueryPageLike/{index}/{pagesize}")]
+        public async Task<ResponseModel<t6_house>> QueryPageLike([FromBody]GenericQueryModel queryBody, int index = 1, int pagesize = 15)
         {
-            return await zeroXService.que(houseId,name);
+            return await zeroXService.QueryPageLike(queryBody,index, pagesize);
         }
-        */
     }
 }

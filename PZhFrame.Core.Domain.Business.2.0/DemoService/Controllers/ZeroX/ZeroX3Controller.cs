@@ -10,6 +10,7 @@ using Models.Model.t6;
 using PZhFrame.ModelLayer.Models.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static PZhFrame.Core.Infrastructure.Lib.GenericQueryAnalizer;
 
 namespace DemoService.Controllers.ZeroX
 {
@@ -21,16 +22,16 @@ namespace DemoService.Controllers.ZeroX
         {
             this.zeroX3Service = zeroX3Service;
         }
-        [HttpGet, Route("Qyery/{index}/{pagesize}")]
-        public async Task<ResponseModel<t6_house>> Qyery(int index = 1, int pagesize = 15)
-        {
-            return await zeroX3Service.Qyery(index, pagesize);
-        }
-
         [HttpGet, Route("QyeryMethod/{index}/{pagesize}")]
         public async Task<ResponseModel<t6_house>> QyeryMethod(int index = 1, int pagesize = 15)
         {
             return await zeroX3Service.QyeryMethod(index, pagesize);
+        }
+
+        [HttpGet, Route("QyeryMethod2/{index}/{pagesize}")]
+        public async Task<ResponseModel<t6_house>> QyeryMethodLike([FromBody]GenericQueryModel queryBody,int index, int pagesize)
+        {
+            return await zeroX3Service.QyeryMethodLike(queryBody,index, pagesize);
         }
     }
 }

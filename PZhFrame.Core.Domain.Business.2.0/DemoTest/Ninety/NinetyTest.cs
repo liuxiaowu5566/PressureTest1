@@ -16,24 +16,9 @@ namespace DemoTest.Ninety
         {
             ninetyService= new NinetyService();
         }
-
+        /*
         [Fact]
         public async void QueryPageTime()
-        {
-            List<TimeSpan> listTime = new List<TimeSpan>();
-            List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
-            for (int i = 1; i < 50; i = i + 1)
-            {
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-                result.Add(await ninetyService.QueryPage(i, 15));
-                sw.Stop();
-                listTime.Add(sw.Elapsed);
-            }
-        }
-
-        [Fact]
-        public async void QueryPageMethodTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
@@ -46,15 +31,20 @@ namespace DemoTest.Ninety
                 listTime.Add(sw.Elapsed);
             }
         }
-
+        */
         [Fact]
-        public async void QueryPageMethodParallelTime()
+        public async void QueryPageLikeTime()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            ResponseModel<t1_history_nunety> result = await ninetyService.QueryPageMethodParallel(2, 15);
-            sw.Stop();
-            double time = sw.Elapsed.TotalMilliseconds;
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
+            for (int i = 100; i < 500; i = i + 100)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                result.Add(await ninetyService.QueryPageLike(i.ToString(),i, 15));
+                sw.Stop();
+                listTime.Add(sw.Elapsed);
+            }
         }
     }
 }
