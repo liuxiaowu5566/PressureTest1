@@ -19,7 +19,9 @@ namespace DemoService.Services.Interface.Ninety
         /// <param name="pagesize"></param>
         /// <returns></returns>
         Task<ResponseModel<t1_history_nunety>> QueryPageMethod(int index, int pagesize);
+
+        Task<ResponseModel<t1_history_nunety>> QueryPageMethodConcurrent(int index, int pagesize);
         
-        Task<ResponseModel<t1_history_nunety>> QueryPageLike(string value, int index, int pagesize);
+        Task<ResponseModel<t1_history_nunety>> QueryPageLike(GenericQueryModel queryBody, int index, int pagesize);
     }
 }

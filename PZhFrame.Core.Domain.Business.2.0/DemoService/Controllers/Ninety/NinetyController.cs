@@ -32,9 +32,9 @@ namespace DemoService.Controllers.Ninety
         }
         
         [HttpPost, Route("QueryPageLike/{index}/{pagesize}")]
-        public async Task<ResponseModel<t1_history_nunety>> QueryPageLike(string value, int index = 1, int pagesize = 15)
+        public async Task<ResponseModel<t1_history_nunety>> QueryPageLike([FromBody]GenericQueryModel queryBody, int index = 1, int pagesize = 15)
         {
-            return await zeroService.QueryPageLike(value, index, pagesize);
+            return await zeroService.QueryPageLike(queryBody, index, pagesize);
         }
     }
 }

@@ -40,15 +40,15 @@ namespace DemoTest.ZeroXTest
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t6_house>> result = new List<ResponseModel<t6_house>>();
             
-            for (int i = 100; i < 400; i = i + 100)
+            for (int i = 1; i < 5; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 GenericQueryModel queryBody = new GenericQueryModel()
                 {
-                    new GenericQueryItem() {Name = "column3", Value = i.ToString(),QueryType = "like" }
+                    new GenericQueryItem() {Name = "column3", Value = "1".ToString(),QueryType = "like" }
                 };
                 sw.Start();
-                result.Add(await zeroXService.QueryPageLike(queryBody, i, 150));
+                result.Add(await zeroXService.QueryPageLike(queryBody, i, 15));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }

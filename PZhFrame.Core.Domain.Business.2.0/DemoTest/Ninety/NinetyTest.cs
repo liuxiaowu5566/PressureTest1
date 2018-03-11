@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xunit;
+using static PZhFrame.Core.Infrastructure.Lib.GenericQueryAnalizer;
 
 namespace DemoTest.Ninety
 {
@@ -22,7 +23,7 @@ namespace DemoTest.Ninety
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
-            for (int i = 1; i < 100; i = i + 1)
+            for (int i = 1; i < 5; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
@@ -32,19 +33,41 @@ namespace DemoTest.Ninety
             }
         }
         */
+        /*
+        [Fact]
+        public async void QueryPageMethodConcurrentTime()
+        {
+            List<TimeSpan> listTime = new List<TimeSpan>();
+            List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
+            for (int i = 1; i < 5; i = i + 1)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                result.Add(await ninetyService.QueryPageMethodConcurrent(i, 15));
+                sw.Stop();
+                listTime.Add(sw.Elapsed);
+            }
+        }
+        */
+        
         [Fact]
         public async void QueryPageLikeTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
-            for (int i = 100; i < 500; i = i + 100)
+            for (int i = 100; i < 400; i = i + 100)
             {
                 Stopwatch sw = new Stopwatch();
+                GenericQueryModel queryBody = new GenericQueryModel()
+                {
+                    new GenericQueryItem() {Name = "Column3", Value = "1",QueryType = "like" }
+                };
                 sw.Start();
-                result.Add(await ninetyService.QueryPageLike(i.ToString(),i, 15));
+                result.Add(await ninetyService.QueryPageLike(queryBody, i, 150));
                 sw.Stop();
                 listTime.Add(sw.Elapsed);
             }
         }
+        
     }
 }
