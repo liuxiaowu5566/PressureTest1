@@ -147,7 +147,9 @@ namespace DemoService.Services.Implements.Ninety
                             	  ) as houseid
                             on history.houseid = houseid.houseid
                             left join t1_code as code
-                            on history.codeid = code.id";
+                            on history.codeid = code.id
+                            where history.codeid<15
+                            ";
             List<t1_history_nunety> listModel = new List<t1_history_nunety>();
             List<nunety> nunetyModel = dataService.GetModelList<nunety>(sql);
             var houseList = nunetyModel.GroupBy(o => o.houseid);
@@ -208,7 +210,7 @@ namespace DemoService.Services.Implements.Ninety
             List<CodeTable> list = dataService.GetModelList<CodeTable>($"select {codeTableRelationName},{codeTableNanmeName} from {typeof(CodeTable).Name}");
             string tTableName = typeof(T).Name;
             string whereSql = "del";
-            string table = $" select {resltName} from {tTableName} where ";
+            string table = $" select distinct {resltName} from {tTableName} where ";
             foreach (var item in queryBody)
             {
                 switch (item.QueryType.Trim())

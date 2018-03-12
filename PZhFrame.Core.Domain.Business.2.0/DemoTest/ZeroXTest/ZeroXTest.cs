@@ -18,7 +18,7 @@ namespace DemoTest.ZeroXTest
         {
 
         }
-
+        /*
         [Fact]
         public async void QueryPageTime()
         {
@@ -33,13 +33,12 @@ namespace DemoTest.ZeroXTest
                 listTime.Add(sw.Elapsed);
             }
         }
-
+        */
         [Fact]
         public async void QueryPageLikeTime()
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t6_house>> result = new List<ResponseModel<t6_house>>();
-            
             for (int i = 1; i < 5; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();

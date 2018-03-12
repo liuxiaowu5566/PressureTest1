@@ -55,12 +55,12 @@ namespace DemoTest.Ninety
         {
             List<TimeSpan> listTime = new List<TimeSpan>();
             List<ResponseModel<t1_history_nunety>> result = new List<ResponseModel<t1_history_nunety>>();
-            for (int i = 100; i < 400; i = i + 100)
+            for (int i = 1; i < 5; i = i + 1)
             {
                 Stopwatch sw = new Stopwatch();
                 GenericQueryModel queryBody = new GenericQueryModel()
                 {
-                    new GenericQueryItem() {Name = "Column3", Value = "1",QueryType = "like" }
+                    new GenericQueryItem() {Name = "column3", Value = "1",QueryType = "like" }
                 };
                 sw.Start();
                 result.Add(await ninetyService.QueryPageLike(queryBody, i, 150));
